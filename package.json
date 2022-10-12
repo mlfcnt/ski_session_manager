@@ -1,5 +1,5 @@
 {
-  "name": "ski_session_manager",
+  "name": "ffs_timing_session",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/server": "^11.10.0",
+    "@mantine/core": "^5.5.5",
+    "@mantine/dates": "^5.5.5",
+    "@mantine/form": "^5.5.5",
+    "@mantine/hooks": "^5.5.5",
+    "@mantine/next": "^5.5.5",
+    "@supabase/supabase-js": "^2.0.0",
+    "@tanstack/react-query": "^4.10.3",
+    "dayjs": "^1.11.5",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
