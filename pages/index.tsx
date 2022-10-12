@@ -2,9 +2,10 @@ import { Button, Loader, Stack, Text, Title } from "@mantine/core";
 import { DatePicker, isSameDate } from "@mantine/dates";
 import dayjs from "dayjs";
 import type { NextPage } from "next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Session, useSessions } from "../api/session-api";
 import styles from "../styles/Home.module.css";
+
 import Link from "next/link";
 
 const Home: NextPage = () => {
@@ -15,7 +16,6 @@ const Home: NextPage = () => {
   if (isLoading) return <Loader />;
   return (
     <div className={styles.container}>
-      <Title style={{ marginBottom: "50px" }}>FFS timing session</Title>
       <Stack justify={"center"}>
         <DatePicker
           locale="fr"
