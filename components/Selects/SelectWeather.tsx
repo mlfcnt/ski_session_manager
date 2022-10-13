@@ -2,7 +2,13 @@ import { Center, Select } from "@mantine/core";
 import React from "react";
 import { Weather } from "../../types";
 
-export const SelectWeather = ({ value, ...props }: { value?: Weather }) => {
+export const SelectWeather = ({
+  value,
+  ...props
+}: {
+  value?: Weather;
+  onChange?(val: Weather | null): void;
+}) => {
   return (
     <Select
       label="Météo"

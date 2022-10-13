@@ -7,6 +7,7 @@ export const SelectDiscipline = ({
   ...props
 }: {
   value?: Discipline;
+  onChange?(val: Discipline | null): void;
 }) => {
   return (
     <Center>

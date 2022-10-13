@@ -55,6 +55,18 @@ const createSession = async (toCreate: CreateSessionDTO) => {
   if (error) throw new Error(error.message);
   return data;
 };
+const updateSession = async (
+  toUpdate: Partial<CreateSessionDTO> & { id: Session["id"] }
+) => {
+  const { data, error } = await supabase
+    .from("session")
+    .update(toUpdate)
+    .eq("id", toUpdate.id)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
 
 export const useCreateSession = () => {
   const queryClient = useQueryClient();
@@ -65,6 +77,20 @@ export const useCreateSession = () => {
       onSuccess: (_result) => {
         queryClient.invalidateQueries(["sessions"]);
         router.push(`/session/${_result[0].id}`);
+      },
+    }
+  );
+  return mutation;
+};
+
+export const useUpdateSession = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (toUpdate: Partial<CreateSessionDTO> & { id: Session["id"] }) =>
+      updateSession(toUpdate),
+    {
+      onSuccess: (_result) => {
+        queryClient.invalidateQueries(["sessions", _result[0].id]);
       },
     }
   );

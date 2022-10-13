@@ -7,6 +7,7 @@ export const SelectSnowCondition = ({
   ...props
 }: {
   value?: SnowCondition;
+  onChange?(val: SnowCondition | null): void;
 }) => {
   return (
     <Center>
