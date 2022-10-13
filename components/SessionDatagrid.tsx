@@ -38,7 +38,7 @@ export const SessionDatagrid = () => {
         width={"100vw"}
       >
         <Grouping autoExpandAll={false} />
-        <Editing mode="form" allowAdding allowDeleting allowUpdating>
+        <Editing mode="form" allowAdding allowDeleting allowUpdating useIcons>
           <Form>
             <GroupItem caption="Coureur">
               <SimpleItem
