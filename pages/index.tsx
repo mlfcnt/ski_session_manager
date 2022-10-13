@@ -7,10 +7,12 @@ import { Session, useSessions } from "../api/session-api";
 import styles from "../styles/Home.module.css";
 
 import Link from "next/link";
+import { CreateSessionForm } from "@/components/CreateSessionForm";
 
 const Home: NextPage = () => {
   const { data: sessions, isLoading } = useSessions();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showCreateSessionForm, setShowCreateSessionForm] = useState(false);
 
   if (isLoading) return <Loader />;
   return (
@@ -36,7 +38,10 @@ const Home: NextPage = () => {
         />
         <DaySessions selectedDate={selectedDate} sessions={sessions} />
         <Text>ou</Text>
-        <Button>Nouvelle session</Button>
+        <Button onClick={() => setShowCreateSessionForm(true)}>
+          Nouvelle session
+        </Button>
+        {showCreateSessionForm && <CreateSessionForm />}
       </Stack>
     </div>
   );

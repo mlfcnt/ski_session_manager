@@ -2,7 +2,12 @@ import { Center, Select } from "@mantine/core";
 import React from "react";
 import { SnowCondition } from "../../types";
 
-export const SelectSnowCondition = ({ value }: { value?: SnowCondition }) => {
+export const SelectSnowCondition = ({
+  value,
+  ...props
+}: {
+  value?: SnowCondition;
+}) => {
   return (
     <Center>
       <Select
@@ -16,6 +21,7 @@ export const SelectSnowCondition = ({ value }: { value?: SnowCondition }) => {
         defaultValue={value}
         size="xs"
         width={20}
+        {...props}
       />
     </Center>
   );

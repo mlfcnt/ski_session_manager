@@ -10,7 +10,6 @@ import { SessionDatagrid } from "../../components/SessionDatagrid";
 
 const Session = () => {
   const router = useRouter();
-  console.log(1, router.route);
   const { id } = router.query;
 
   const sessionId = Number(id);

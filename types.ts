@@ -8,7 +8,7 @@ export type SnowCondition =
   | "ARTIF ARROSÉE"
   | "INJECTÉE";
 export type Weather =
-  | "beau temps"
-  | "couvert"
-  | "jour blanc"
-  | "chute de neige";
+  | "Beau temps"
+  | "Couvert"
+  | "Jour blanc"
+  | "Chute de neige";

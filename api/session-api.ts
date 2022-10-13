@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { Discipline, SnowCondition, Weather } from "../types";
 import { supabase } from "../utils/supabaseClient";
 
@@ -36,3 +37,36 @@ export const useSession = (id?: Session["id"]) =>
   useQuery<Session>(["sessions", id], () => fetchSessionById(id), {
     enabled: !!id,
   });
+
+export type CreateSessionDTO = {
+  name: Session["name"];
+  date: Session["date"];
+  discipline: Session["discipline"];
+  snowCondition: Session["snowCondition"];
+  weather: Session["weather"];
+};
+
+const createSession = async (toCreate: CreateSessionDTO) => {
+  const { data, error } = await supabase
+    .from("session")
+    .insert(toCreate)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useCreateSession = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const mutation = useMutation(
+    (toCreate: CreateSessionDTO) => createSession(toCreate),
+    {
+      onSuccess: (_result) => {
+        queryClient.invalidateQueries(["sessions"]);
+        router.push(`/session/${_result[0].id}`);
+      },
+    }
+  );
+  return mutation;
+};
