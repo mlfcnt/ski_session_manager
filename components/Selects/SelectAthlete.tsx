@@ -1,20 +1,31 @@
-import { Center, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 import React from "react";
 import { Athlete, useAthletes } from "../../api/athletes-api";
 
-export const SelectAthlete = ({ value }: { value?: Athlete["id"] }) => {
+export const SelectAthlete = ({
+  value,
+  ...props
+}: {
+  value?: Athlete["id"];
+}) => {
   const { data: athletes } = useAthletes();
+
   return (
-    <Center>
-      <Select
-        data={(athletes || []).map((x) => ({
-          value: String(x.id),
-          label: `${x.firstname} ${x.lastname}`,
-        }))}
-        defaultValue={String(value)}
-        size="xs"
-        width={20}
-      />
-    </Center>
+    <Select
+      data={(athletes || []).map((x) => ({
+        value: String(x.id),
+        label: `${x.firstname} ${x.lastname}`,
+      }))}
+      defaultValue={String(value)}
+      size="sm"
+      creatable
+      getCreateLabel={(query) => `+ Créer ${query}`}
+      searchable
+      onCreate={(query) => {
+        //TODO create athlete
+        return "";
+      }}
+      {...props}
+    />
   );
 };

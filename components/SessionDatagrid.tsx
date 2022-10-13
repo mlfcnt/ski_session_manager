@@ -32,10 +32,10 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         <Grouping autoExpandAll={false} />
         <Editing mode="form" allowAdding allowDeleting allowUpdating useIcons>
           <Form>
-            <GroupItem caption="Coureur">
+            <GroupItem>
               <SimpleItem
                 dataField="athleteId"
-                render={(id) => <SelectAthlete />}
+                render={() => <SelectAthlete />}
                 isRequired
               />
             </GroupItem>
