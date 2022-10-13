@@ -7,6 +7,8 @@ import "dayjs/locale/fr";
 import { useEffect } from "react";
 import Link from "next/link";
 import "devextreme/dist/css/dx.light.css";
+import frMessages from "devextreme/localization/messages/fr.json";
+import { locale, loadMessages } from "devextreme/localization";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -15,6 +17,8 @@ export default function App(props: AppProps) {
 
   useEffect(() => {
     dayjs.locale("fr");
+    loadMessages(frMessages);
+    locale("fr");
   }, []);
 
   return (

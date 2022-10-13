@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Discipline, SnowCondition, Weather } from "../types";
 import { supabase } from "../utils/supabaseClient";
 
 const fetchSessions = async () => {
@@ -16,18 +17,6 @@ export type Session = {
   snowCondition: SnowCondition;
   weather: Weather;
 };
-
-export type Discipline = "GS" | "SL" | "SG" | "DH" | "AC";
-export type SnowCondition =
-  | "ARTIF"
-  | "ARTIF DURE"
-  | "ARTIF ARROSÉE"
-  | "INJECTÉE";
-export type Weather =
-  | "beau temps"
-  | "couvert"
-  | "jour blanc"
-  | "chute de neige";
 
 export const useSessions = () =>
   useQuery<Session[]>(["sessions"], fetchSessions);
