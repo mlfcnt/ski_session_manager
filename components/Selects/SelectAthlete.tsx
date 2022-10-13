@@ -3,7 +3,6 @@ import React from "react";
 import { Athlete, useAthletes } from "../../api/athletes-api";
 
 export const SelectAthlete = ({ value }: { value?: Athlete["id"] }) => {
-  console.log({ value });
   const { data: athletes } = useAthletes();
   return (
     <Center>

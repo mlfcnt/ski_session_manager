@@ -7,30 +7,22 @@ import DataGrid, {
 } from "devextreme-react/data-grid";
 import { SimpleItem, GroupItem } from "devextreme-react/form";
 import { addTimes, millisecToSkiFormat } from "../helpers/times";
-import { Timing } from "../types";
-import { calculateRank, Record } from "../helpers/rank";
+import { SkiFormattedTime } from "../types";
+import { calculateRank } from "../helpers/rank";
 import { SelectAthlete } from "./Selects/SelectAthlete";
+import { useTimingsBySessionId, Timing } from "api/timings-api";
+import { Session } from "api/session-api";
 
-export const SessionDatagrid = () => {
-  const timings: Record[] = [
-    {
-      id: 1,
-      athleteId: 1,
-      athleteFullname: "Tommy Martin",
-      m1: "1.00.00",
-      m2: "1.10.00",
-    },
-    {
-      id: 2,
-      athleteId: 2,
-      athleteFullname: "Nina Martin",
-      m1: "1.10.00",
-      m2: "1.20.00",
-    },
-  ];
+type Props = {
+  sessionId: Session["id"];
+};
+
+export const SessionDatagrid = ({ sessionId }: Props) => {
+  const { data: timings } = useTimingsBySessionId(sessionId);
+
   return (
     <>
-      <DataGrid<Record>
+      <DataGrid<Timing>
         dataSource={timings}
         rowAlternationEnabled
         showBorders
@@ -89,15 +81,15 @@ export const SessionDatagrid = () => {
           calculateSortValue={({
             id,
           }: {
-            m1: Timing;
-            m2: Timing;
+            m1: SkiFormattedTime;
+            m2: SkiFormattedTime;
             id: number;
-          }) => calculateRank(id, timings)}
+          }) => calculateRank(id, timings, true)}
           calculateDisplayValue={({
             id,
           }: {
-            m1: Timing;
-            m2: Timing;
+            m1: SkiFormattedTime;
+            m2: SkiFormattedTime;
             id: number;
           }) => calculateRank(id, timings)}
         />
@@ -105,21 +97,26 @@ export const SessionDatagrid = () => {
           dataField="athleteId"
           caption="Coureur"
           calculateDisplayValue={({
-            athleteFullname,
+            athleteFullName,
           }: {
-            athleteFullname: Record["athleteFullname"];
-          }) => {
-            return athleteFullname;
-          }}
+            athleteFullName: Timing["athleteFullName"];
+          }) => athleteFullName}
         />
         <Column dataField="m1" caption="1" />
         <Column dataField="m2" caption="2" />
         <Column
           dataField="total"
           caption="Tot."
-          calculateDisplayValue={({ m1, m2 }: { m1: Timing; m2: Timing }) =>
-            millisecToSkiFormat(addTimes(m1, m2))
-          }
+          calculateDisplayValue={({
+            m1,
+            m2,
+          }: {
+            m1: SkiFormattedTime;
+            m2: SkiFormattedTime;
+          }) => {
+            if (!m2) return null;
+            return millisecToSkiFormat(addTimes(m1, m2));
+          }}
         />
       </DataGrid>
     </>

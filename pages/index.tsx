@@ -10,12 +10,14 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   const { data: sessions, isLoading } = useSessions();
-  console.log("👽CLG - file: index.tsx - line 12 - sessions", sessions);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   if (isLoading) return <Loader />;
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{ maxWidth: "500px", margin: "auto" }}
+    >
       <Stack justify={"center"}>
         <DatePicker
           locale="fr"

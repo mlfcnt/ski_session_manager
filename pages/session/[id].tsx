@@ -1,7 +1,7 @@
 import { Loader, SimpleGrid, Space, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useMemo } from "react";
 import { useSession } from "../../api/session-api";
 import { SelectDiscipline } from "../../components/Selects/SelectDiscipline";
 import { SelectSnowCondition } from "../../components/Selects/SelectSnowCondition";
@@ -10,9 +10,12 @@ import { SessionDatagrid } from "../../components/SessionDatagrid";
 
 const Session = () => {
   const router = useRouter();
+  console.log(1, router.route);
   const { id } = router.query;
 
-  const { data: session, isLoading } = useSession(Number(id));
+  const sessionId = Number(id);
+
+  const { data: session, isLoading } = useSession(sessionId);
 
   if (isLoading || !session) return <Loader />;
 
@@ -28,7 +31,7 @@ const Session = () => {
       </SimpleGrid>
       <Space h={"xl"} />
 
-      <SessionDatagrid />
+      <SessionDatagrid sessionId={sessionId} />
     </div>
   );
 };
