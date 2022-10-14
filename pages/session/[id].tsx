@@ -1,4 +1,4 @@
-import { Loader, SimpleGrid, Space, Title } from "@mantine/core";
+import { Group, Loader, SimpleGrid, Space, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
@@ -17,13 +17,19 @@ const Session = () => {
   const { data: session, isLoading } = useSession(sessionId);
   const { mutate: updateSession } = useUpdateSession();
 
-  if (isLoading || !session) return <Loader />;
-
+  if (isLoading || !session)
+    return (
+      <Group position="center">
+        <Loader />
+      </Group>
+    );
   return (
     <div style={{ textAlign: "center" }}>
-      <Title style={{ display: "inline" }} size={20} weight="normal">
-        {dayjs(session.date).format("DD MMMM YYYY")} - {session.name}
+      <Title size={30} weight="normal">
+        {dayjs(session.date).format("DD MMMM YYYY")}
       </Title>
+      <Title size={20}>{session.name}</Title>
+      <Space h="xl" />
       <SimpleGrid cols={3}>
         <SelectDiscipline
           value={session.discipline}

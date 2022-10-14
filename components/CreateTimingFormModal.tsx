@@ -26,8 +26,13 @@ export const CreateTimingFormModal = ({
     },
   });
 
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   return (
-    <Modal opened={opened} onClose={onClose}>
+    <Modal opened={opened} onClose={handleClose}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
           onSubmit={form.onSubmit((values) => {
@@ -37,8 +42,8 @@ export const CreateTimingFormModal = ({
         >
           <SelectAthlete
             required
-            {...form.getInputProps("athleteId")}
             label="Coureur"
+            {...form.getInputProps("athleteId")}
           />
           <Space />
           <TextInput label="Manche 1" {...form.getInputProps("m1")} />

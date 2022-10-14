@@ -40,8 +40,16 @@ export default function App(props: AppProps) {
         }}
       >
         <QueryClientProvider client={queryClient}>
-          <div>
-            <Title style={{ marginBottom: "50px", textAlign: "center" }}>
+          <div
+            style={{
+              backgroundImage: `url("https://static8.depositphotos.com/1491329/1068/i/950/depositphotos_10687474-stock-photo-funny-hamster.jpg")`,
+              backgroundPositionY: "45vh",
+              backgroundPositionX: "center",
+              backgroundRepeat: "no-repeat",
+              minHeight: "100vh",
+            }}
+          >
+            <Title style={{ marginBottom: "20px", textAlign: "center" }}>
               <Link href={"/"}>FFS timing session</Link>
             </Title>
             <Component {...pageProps} />

@@ -1,4 +1,4 @@
-import { Button, Loader, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Loader, Stack, Text, Title } from "@mantine/core";
 import { DatePicker, isSameDate } from "@mantine/dates";
 import dayjs from "dayjs";
 import type { NextPage } from "next";
@@ -15,7 +15,12 @@ const Home: NextPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showCreateSessionForm, setShowCreateSessionForm] = useState(false);
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <Group position="center">
+        <Loader />
+      </Group>
+    );
   return (
     <div
       className={styles.container}
