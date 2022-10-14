@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataGrid, { Column, Grouping } from "devextreme-react/data-grid";
 import { addTimes, millisecToSkiFormat } from "../helpers/times";
 import { SkiFormattedTime } from "../types";
@@ -15,6 +15,16 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
   const [showCreateTimingModal, setShowCreateTimingModal] = useState(false);
   const { data: timings } = useTimingsBySessionId(sessionId);
 
+  const gridRef = useRef<DataGrid>(null);
+
+  useEffect(() => {
+    //force sort refresh on new data
+    gridRef?.current?.instance.columnOption("total", {
+      sortOrder: "asc",
+      sortIndex: 0,
+    });
+  }, [timings]);
+
   return (
     <>
       <DataGrid<Timing>
@@ -23,6 +33,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         showBorders
         columnAutoWidth
         width={"100vw"}
+        ref={gridRef}
       >
         <Grouping autoExpandAll={false} />
 
@@ -40,13 +51,30 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
             athleteName: Timing["athleteName"];
           }) => athleteName}
         />
-        <Column dataField="m1" caption="1" />
-        <Column dataField="m2" caption="2" />
+        <Column
+          dataField="m1"
+          caption="1"
+          alignment={"right"}
+          calculateDisplayValue={({ m1 }: { m1: SkiFormattedTime }) =>
+            m1 || "X"
+          }
+        />
+        <Column
+          dataField="m2"
+          caption="2"
+          alignment={"right"}
+          calculateDisplayValue={({ m2 }: { m2: SkiFormattedTime }) =>
+            m2 || "X"
+          }
+        />
         <Column
           dataField="total"
           caption="Tot."
           defaultSortIndex={0}
           defaultSortOrder="asc"
+          sortOrder={"asc"}
+          sortIndex={0}
+          alignment="right"
           calculateSortValue={({
             m1,
             m2,
@@ -54,7 +82,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
             m1: SkiFormattedTime;
             m2: SkiFormattedTime;
           }) => {
-            if (!m2) return null;
+            if (!m1 || !m2) return 1000;
             return millisecToSkiFormat(addTimes(m1, m2));
           }}
           calculateDisplayValue={({
@@ -64,7 +92,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
             m1: SkiFormattedTime;
             m2: SkiFormattedTime;
           }) => {
-            if (!m2) return null;
+            if (!m1 || !m2) return "X";
             return millisecToSkiFormat(addTimes(m1, m2));
           }}
         />
@@ -76,7 +104,9 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
       <CreateTimingFormModal
         sessionId={sessionId}
         opened={showCreateTimingModal}
-        onClose={() => setShowCreateTimingModal(!showCreateTimingModal)}
+        onClose={() => {
+          setShowCreateTimingModal(!showCreateTimingModal);
+        }}
       />
     </>
   );
