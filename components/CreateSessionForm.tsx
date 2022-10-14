@@ -6,6 +6,7 @@ import { CreateSessionDTO, useCreateSession } from "api/session-api";
 import { DatePicker } from "@mantine/dates";
 import { SelectSnowCondition } from "./Selects/SelectSnowCondition";
 import { SelectWeather } from "./Selects/SelectWeather";
+import { Discipline, SnowCondition, Weather } from "types";
 
 export const CreateSessionForm = () => {
   const { mutate: createSession } = useCreateSession();
@@ -13,9 +14,9 @@ export const CreateSessionForm = () => {
     initialValues: {
       name: "",
       date: new Date(),
-      discipline: "SG",
-      snowCondition: "ARTIF",
-      weather: "Couvert",
+      discipline: null as unknown as Discipline,
+      snowCondition: null as unknown as SnowCondition,
+      weather: null as unknown as Weather,
     },
   });
   return (
@@ -30,7 +31,7 @@ export const CreateSessionForm = () => {
         />
         <TextInput
           required
-          label="Nom de la session"
+          label="Groupe / lieu de la session"
           {...form.getInputProps("name")}
           size="xs"
         />

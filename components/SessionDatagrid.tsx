@@ -8,7 +8,6 @@ import DataGrid, {
 import { SimpleItem, GroupItem } from "devextreme-react/form";
 import { addTimes, millisecToSkiFormat } from "../helpers/times";
 import { SkiFormattedTime } from "../types";
-import { calculateRank } from "../helpers/rank";
 import { SelectAthlete } from "./Selects/SelectAthlete";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
@@ -84,25 +83,9 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           dataField="rank"
           caption="#"
           width={30}
-          defaultSortIndex={0}
-          defaultSortOrder="asc"
-          calculateSortValue={({
-            id,
-          }: {
-            m1: SkiFormattedTime;
-            m2: SkiFormattedTime;
-            id: number;
-          }) => calculateRank(id, timings, true)}
-          calculateDisplayValue={({
-            id,
-          }: {
-            m1: SkiFormattedTime;
-            m2: SkiFormattedTime;
-            id: number;
-          }) => calculateRank(id, timings)}
+          cellRender={(e) => e.rowIndex + 1}
         />
         <Column
-          dataField="athleteId"
           caption="Coureur"
           calculateDisplayValue={({
             athleteFullName,
@@ -115,6 +98,18 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         <Column
           dataField="total"
           caption="Tot."
+          defaultSortIndex={0}
+          defaultSortOrder="asc"
+          calculateSortValue={({
+            m1,
+            m2,
+          }: {
+            m1: SkiFormattedTime;
+            m2: SkiFormattedTime;
+          }) => {
+            if (!m2) return null;
+            return millisecToSkiFormat(addTimes(m1, m2));
+          }}
           calculateDisplayValue={({
             m1,
             m2,

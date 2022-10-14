@@ -46,7 +46,6 @@ const Session = () => {
         />
       </SimpleGrid>
       <Space h={"xl"} />
-
       <SessionDatagrid sessionId={sessionId} />
     </div>
   );
