@@ -12,6 +12,8 @@ import { calculateRank } from "../helpers/rank";
 import { SelectAthlete } from "./Selects/SelectAthlete";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
+import { CreateSessionForm } from "./CreateSessionForm";
+import { Popup } from "devextreme-react";
 
 type Props = {
   sessionId: Session["id"];
@@ -30,7 +32,13 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         width={"100vw"}
       >
         <Grouping autoExpandAll={false} />
-        <Editing mode="form" allowAdding allowDeleting allowUpdating useIcons>
+        <Editing mode="popup" allowAdding allowDeleting allowUpdating useIcons>
+          <Popup
+            title="Employee Info"
+            showTitle={true}
+            width={700}
+            height={525}
+          />
           <Form>
             <GroupItem>
               <SimpleItem
@@ -99,7 +107,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           calculateDisplayValue={({
             athleteFullName,
           }: {
-            athleteFullName: Timing["athleteFullName"];
+            athleteFullName: Timing["athleteName"];
           }) => athleteFullName}
         />
         <Column dataField="m1" caption="1" />

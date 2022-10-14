@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { supabase } from "../utils/supabaseClient";
 
 const fetchAthletes = async () => {
@@ -10,9 +11,35 @@ const fetchAthletes = async () => {
 
 export type Athlete = {
   id: number;
-  firstname: string;
-  lastname: string;
+  name: string;
 };
 
 export const useAthletes = () =>
   useQuery<Athlete[]>(["athletes"], fetchAthletes);
+
+export type CreateAthleteDTO = Pick<Athlete, "name">;
+
+const createAthlete = async (toCreate: CreateAthleteDTO) => {
+  const { data, error } = await supabase
+    .from("athlete")
+    .insert(toCreate)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useCreateAthlete = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (toCreate: CreateAthleteDTO) => {
+      return createAthlete(toCreate);
+    },
+    {
+      onSuccess: (_result) => {
+        queryClient.invalidateQueries(["athletes", _result[0].id]);
+      },
+    }
+  );
+  return mutation;
+};

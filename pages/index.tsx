@@ -8,6 +8,7 @@ import styles from "../styles/Home.module.css";
 
 import Link from "next/link";
 import { CreateSessionForm } from "@/components/CreateSessionForm";
+import { SelectAthlete } from "@/components/Selects/SelectAthlete";
 
 const Home: NextPage = () => {
   const { data: sessions, isLoading } = useSessions();

@@ -1,6 +1,6 @@
 import { Select } from "@mantine/core";
 import React from "react";
-import { Athlete, useAthletes } from "../../api/athletes-api";
+import { Athlete, useAthletes, useCreateAthlete } from "../../api/athletes-api";
 
 export const SelectAthlete = ({
   value,
@@ -9,21 +9,21 @@ export const SelectAthlete = ({
   value?: Athlete["id"];
 }) => {
   const { data: athletes } = useAthletes();
+  const { mutateAsync: createAthlete } = useCreateAthlete();
 
   return (
     <Select
       data={(athletes || []).map((x) => ({
         value: String(x.id),
-        label: `${x.firstname} ${x.lastname}`,
+        label: x.name,
       }))}
       defaultValue={String(value)}
       size="sm"
       creatable
       getCreateLabel={(query) => `+ Créer ${query}`}
       searchable
-      onCreate={(query) => {
-        //TODO create athlete
-        return "";
+      onCreate={(name) => {
+        createAthlete({ name }).then(() => ({ label: "test", value: "value" }));
       }}
       {...props}
     />

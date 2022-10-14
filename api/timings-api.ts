@@ -10,7 +10,7 @@ export type Timing = {
   m1: SkiFormattedTime;
   m2?: SkiFormattedTime;
   sessionId: Session["id"];
-  athleteFullName: `${Athlete["firstname"]} ${Athlete["lastname"]}`;
+  athleteName: Athlete["name"];
 };
 
 const fetchTimingsBySessionId = async (
@@ -20,7 +20,7 @@ const fetchTimingsBySessionId = async (
     .from("timings")
     .select(
       `id,m1,m2, athleteId, sessionId, athleteId (
-        id, firstname, lastname
+        id, name
     ) `
     )
     .eq("sessionId", id);
@@ -32,7 +32,7 @@ const fetchTimingsBySessionId = async (
     m1: timing.m1,
     m2: timing.m2,
     sessionId: timing.sessionId,
-    athleteFullName: `${timing.athleteId.firstname} ${timing.athleteId.lastname}`,
+    athleteName: timing.athleteId.name,
   }));
 };
 
