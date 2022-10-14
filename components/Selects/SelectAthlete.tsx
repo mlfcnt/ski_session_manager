@@ -19,6 +19,7 @@ export const SelectAthlete = ({ ...props }: Omit<SelectProps, "data">) => {
       getCreateLabel={(query) => `+ Créer ${query}`}
       searchable
       clearable
+      variant="filled"
       onCreate={(name) => {
         createAthlete({ name });
         return "";

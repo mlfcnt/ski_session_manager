@@ -21,6 +21,7 @@ export const SelectDiscipline = ({
           { value: "SL", label: "SL" },
         ]}
         defaultValue={value}
+        variant="filled"
         size="xs"
         width={20}
         {...props}

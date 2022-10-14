@@ -21,6 +21,7 @@ export const SelectSnowCondition = ({
         ]}
         defaultValue={value}
         size="xs"
+        variant="filled"
         width={20}
         {...props}
       />

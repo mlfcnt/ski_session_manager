@@ -7,8 +7,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export type Timing = {
   id: number;
   athleteId: Athlete["id"];
-  m1: SkiFormattedTime;
-  m2?: SkiFormattedTime;
+  m1: SkiFormattedTime | null;
+  m2: SkiFormattedTime | null;
   sessionId: Session["id"];
   athleteName: Athlete["name"];
 };
