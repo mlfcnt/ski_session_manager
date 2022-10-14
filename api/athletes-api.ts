@@ -21,7 +21,7 @@ export type CreateAthleteDTO = Pick<Athlete, "name">;
 
 const createAthlete = async (toCreate: CreateAthleteDTO) => {
   const { data, error } = await supabase
-    .from("athlete")
+    .from("athletes")
     .insert(toCreate)
     .select();
 
@@ -37,7 +37,7 @@ export const useCreateAthlete = () => {
     },
     {
       onSuccess: (_result) => {
-        queryClient.invalidateQueries(["athletes", _result[0].id]);
+        queryClient.invalidateQueries(["athletes"]);
       },
     }
   );

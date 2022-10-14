@@ -1,24 +1,18 @@
-import React from "react";
-import DataGrid, {
-  Column,
-  Grouping,
-  Editing,
-  Form,
-} from "devextreme-react/data-grid";
-import { SimpleItem, GroupItem } from "devextreme-react/form";
+import React, { useState } from "react";
+import DataGrid, { Column, Grouping } from "devextreme-react/data-grid";
 import { addTimes, millisecToSkiFormat } from "../helpers/times";
 import { SkiFormattedTime } from "../types";
-import { SelectAthlete } from "./Selects/SelectAthlete";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
-import { CreateSessionForm } from "./CreateSessionForm";
-import { Popup } from "devextreme-react";
+import { Button, Group, Space } from "@mantine/core";
+import { CreateTimingFormModal } from "./CreateTimingFormModal";
 
 type Props = {
   sessionId: Session["id"];
 };
 
 export const SessionDatagrid = ({ sessionId }: Props) => {
+  const [showCreateTimingModal, setShowCreateTimingModal] = useState(false);
   const { data: timings } = useTimingsBySessionId(sessionId);
 
   return (
@@ -31,53 +25,6 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         width={"100vw"}
       >
         <Grouping autoExpandAll={false} />
-        <Editing mode="popup" allowAdding allowDeleting allowUpdating useIcons>
-          <Popup
-            title="Employee Info"
-            showTitle={true}
-            width={700}
-            height={525}
-          />
-          <Form>
-            <GroupItem>
-              <SimpleItem
-                dataField="athleteId"
-                render={() => <SelectAthlete />}
-                isRequired
-              />
-            </GroupItem>
-            <GroupItem caption="Temps">
-              <SimpleItem
-                dataField="m1"
-                label={{
-                  text: "Manche 1",
-                }}
-                helpText={"Format m.ss.cc ex: 1.00.00"}
-                validationRules={[
-                  {
-                    type: "pattern",
-                    pattern: /\d\.\d\d\.\d\d/,
-                    message: "Le format n'est pas le bon",
-                  },
-                ]}
-              />
-              <SimpleItem
-                dataField="m2"
-                label={{
-                  text: "Manche 2",
-                }}
-                helpText={"Format m.ss.cc ex: 1.00.00"}
-                validationRules={[
-                  {
-                    type: "pattern",
-                    pattern: /\d\.\d\d\.\d\d/,
-                    message: "Le format n'est pas le bon",
-                  },
-                ]}
-              />
-            </GroupItem>
-          </Form>
-        </Editing>
 
         <Column
           dataField="rank"
@@ -88,10 +35,10 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         <Column
           caption="Coureur"
           calculateDisplayValue={({
-            athleteFullName,
+            athleteName,
           }: {
-            athleteFullName: Timing["athleteName"];
-          }) => athleteFullName}
+            athleteName: Timing["athleteName"];
+          }) => athleteName}
         />
         <Column dataField="m1" caption="1" />
         <Column dataField="m2" caption="2" />
@@ -122,6 +69,15 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           }}
         />
       </DataGrid>
+      <Space h={"xl"} />
+      <Group position="right" style={{ marginRight: "20px" }}>
+        <Button onClick={() => setShowCreateTimingModal(true)}>Ajouter</Button>
+      </Group>
+      <CreateTimingFormModal
+        sessionId={sessionId}
+        opened={showCreateTimingModal}
+        onClose={() => setShowCreateTimingModal(!showCreateTimingModal)}
+      />
     </>
   );
 };

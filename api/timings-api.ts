@@ -2,7 +2,7 @@ import { Session } from "./session-api";
 import { supabase } from "../utils/supabaseClient";
 import { Athlete } from "./athletes-api";
 import { SkiFormattedTime } from "types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type Timing = {
   id: number;
@@ -40,3 +40,29 @@ export const useTimingsBySessionId = (id?: Session["id"]) =>
   useQuery<Timing[]>(["timings", id], () => fetchTimingsBySessionId(id), {
     enabled: !!id,
   });
+
+export type CreateTimingDTO = Omit<Timing, "id" | "athleteName">;
+
+const createTiming = async (toCreate: CreateTimingDTO) => {
+  const { data, error } = await supabase
+    .from("timings")
+    .insert(toCreate)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useCreateTiming = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (toCreate: CreateTimingDTO) => createTiming(toCreate),
+    {
+      onSuccess: (_result) => {
+        queryClient.invalidateQueries(["timings"]);
+        queryClient.invalidateQueries(["session", _result[0]?.sessionId]);
+      },
+    }
+  );
+  return mutation;
+};
