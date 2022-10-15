@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Discipline, SnowCondition, Weather } from "../types";
 import { supabase } from "../utils/supabaseClient";
+import { useDeleteTimingsForSession } from "./timings-api";
 
 const fetchSessions = async () => {
   const { data, error } = await supabase.from("session").select("*");
@@ -92,6 +93,34 @@ export const useUpdateSession = () => {
     {
       onSuccess: (_result) => {
         queryClient.invalidateQueries(["sessions", _result[0].id]);
+      },
+    }
+  );
+  return mutation;
+};
+
+const deleteSession = async (sessionId: Session["id"]) => {
+  const { data, error } = await supabase
+    .from("session")
+    .delete()
+    .eq("id", sessionId);
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useDeleteSession = () => {
+  const queryClient = useQueryClient();
+  const { mutateAsync: deleteTimingForSession } = useDeleteTimingsForSession();
+
+  const mutation = useMutation(
+    async (sessionId: Session["id"]) => {
+      await deleteTimingForSession(sessionId);
+      return deleteSession(sessionId);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["sessions"]);
       },
     }
   );

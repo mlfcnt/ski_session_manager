@@ -117,3 +117,25 @@ export const useDeleteTiming = () => {
   );
   return mutation;
 };
+const deleteTimingsForSession = async (sessionId: Session["id"]) => {
+  const { data, error } = await supabase
+    .from("timings")
+    .delete()
+    .eq("sessionId", sessionId);
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useDeleteTimingsForSession = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (sessionId: Session["id"]) => deleteTimingsForSession(sessionId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["timings"]);
+      },
+    }
+  );
+  return mutation;
+};

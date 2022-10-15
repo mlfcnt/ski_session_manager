@@ -3,11 +3,12 @@ import { DatePicker, isSameDate } from "@mantine/dates";
 import dayjs from "dayjs";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { Session, useSessions } from "../api/session-api";
+import { Session, useDeleteSession, useSessions } from "../api/session-api";
 import styles from "../styles/Home.module.css";
 
 import Link from "next/link";
 import { CreateSessionForm } from "@/components/CreateSessionForm";
+import { IconTrash } from "@tabler/icons";
 
 const Home: NextPage = () => {
   const { data: sessions, isLoading } = useSessions();
@@ -62,6 +63,7 @@ const DaySessions = ({
   selectedDate: Date | null;
   sessions?: Session[];
 }) => {
+  const { mutate: deleteSession } = useDeleteSession();
   if (!selectedDate) return null;
 
   const sessionsForTheDay = (sessions || []).filter((x) =>
@@ -76,11 +78,23 @@ const DaySessions = ({
     );
   return (
     <ul>
-      {sessionsForTheDay.map((x) => (
-        <li key={x.id}>
-          <Link href={`/session/${x.id}`}>
-            <a>{x.name}</a>
+      {sessionsForTheDay.map((session) => (
+        <li key={session.id} style={{ display: "flex", marginBottom: "10px" }}>
+          <Link href={`/session/${session.id}`}>
+            <a>{session.name}</a>
           </Link>
+          <IconTrash
+            color="red"
+            style={{ marginLeft: "10px", cursor: "pointer" }}
+            onClick={() => {
+              const confirm = window.confirm(
+                `Etes vous sur de vouloir supprimer la session ${session.name} ?`
+              );
+              if (confirm) {
+                deleteSession(session.id);
+              }
+            }}
+          />
         </li>
       ))}
     </ul>
