@@ -165,6 +165,7 @@ export const TimingFormModal = ({
             <TextInput
               size="sm"
               label="Skis"
+              variant="filled"
               {...form.getInputProps("m1Skis")}
             />
           </div>
@@ -181,6 +182,7 @@ export const TimingFormModal = ({
             <TextInput
               size="sm"
               label="Skis"
+              variant="filled"
               {...form.getInputProps("m2Skis")}
             />
           </div>
