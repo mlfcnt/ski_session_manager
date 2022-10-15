@@ -9,9 +9,15 @@ export type Timing = {
   athleteId: Athlete["id"];
   m1: SkiFormattedTime | null;
   m2: SkiFormattedTime | null;
+  m1Skis?: string;
+  m2Skis?: string;
+  m1Status?: MStatus;
+  m2Status?: MStatus;
   sessionId: Session["id"];
   athleteName: Athlete["name"];
 };
+
+type MStatus = "ABD" | "DSQ";
 
 const fetchTimingsBySessionId = async (
   id?: Session["id"]
@@ -19,7 +25,7 @@ const fetchTimingsBySessionId = async (
   const { data: timings, error } = await supabase
     .from("timings")
     .select(
-      `id,m1,m2, athleteId, sessionId, athleteId (
+      `id,m1,m2,m1Skis, m2Skis, m1Status, m2Status, athleteId, sessionId, athleteId (
         id, name
     ) `
     )
@@ -27,11 +33,8 @@ const fetchTimingsBySessionId = async (
 
   if (error) throw new Error(error.message);
   return timings.map((timing) => ({
-    id: timing.id,
+    ...timing,
     athleteId: timing.athleteId.id,
-    m1: timing.m1,
-    m2: timing.m2,
-    sessionId: timing.sessionId,
     athleteName: timing.athleteId.name,
   }));
 };

@@ -14,7 +14,6 @@ import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
 import { Button, Group, Space } from "@mantine/core";
 import { TimingFormModal } from "./TimingFormModal";
-import { IconEdit } from "@tabler/icons";
 
 type Props = {
   sessionId: Session["id"];
@@ -61,11 +60,24 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         />
         <Column
           caption="Coureur"
-          calculateDisplayValue={({
-            athleteName,
+          cellRender={({
+            data: { athleteName, m1Skis, m2Skis },
           }: {
-            athleteName: Timing["athleteName"];
-          }) => athleteName}
+            data: {
+              athleteName: Timing["athleteName"];
+              m1Skis: Timing["m1Skis"];
+              m2Skis: Timing["m2Skis"];
+            };
+          }) => (
+            <div>
+              <span>{athleteName}</span>{" "}
+              {(m1Skis || m2Skis) && (
+                <span style={{ color: "grey", fontStyle: "italic" }}>
+                  | skis : {m1Skis} - {m2Skis}
+                </span>
+              )}
+            </div>
+          )}
         />
         <Column
           dataField="m1"
@@ -104,10 +116,16 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           calculateDisplayValue={({
             m1,
             m2,
+            m1Status,
+            m2Status,
           }: {
             m1: SkiFormattedTime;
             m2: SkiFormattedTime;
+            m1Status: Timing["m1Status"];
+            m2Status: Timing["m2Status"];
           }) => {
+            if (m1Status) return m1Status;
+            if (m2Status) return m1Status;
             if (!m1 || !m2) return "DNS";
             return millisecToSkiFormat(addTimes(m1, m2));
           }}

@@ -17,7 +17,7 @@ export const SelectWeather = ({
         { value: "Couvert", label: "Couvert" },
         { value: "Jour blanc", label: "Jour blanc" },
         { value: "Chute de neige", label: "Chute de neige" },
-      ]}
+      ].sort((a, b) => a.label.localeCompare(b.label))}
       defaultValue={value}
       size="xs"
       variant="filled"

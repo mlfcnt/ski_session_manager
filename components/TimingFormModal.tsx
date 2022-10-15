@@ -1,4 +1,12 @@
-import { Box, Button, Group, Modal, Space } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Group,
+  Modal,
+  Space,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Session } from "api/session-api";
 import {
@@ -14,6 +22,7 @@ import { SkiFormattedTime } from "types";
 import { SelectAthlete } from "./Selects/SelectAthlete";
 import { TimingInput } from "./TimingInput";
 import { IconTrash, IconDeviceFloppy } from "@tabler/icons";
+import { StatusRadioGroup } from "./StatusRadioGroup";
 
 type Props = {
   sessionId: Session["id"];
@@ -30,7 +39,6 @@ export const TimingFormModal = ({
   initialValues,
   isEdit = false,
 }: Props) => {
-  console.log({ isEdit, initialValues });
   const { mutate: createTiming } = useCreateTiming();
   const { mutate: updateTiming } = useUpdateTiming();
   const { mutate: deleteTiming } = useDeleteTiming();
@@ -39,9 +47,26 @@ export const TimingFormModal = ({
       athleteId: null as unknown as Timing["athleteId"],
       m1: null,
       m2: null,
+      m1Skis: "",
+      m2Skis: "",
+      m1Status: undefined,
+      m2Status: undefined,
       sessionId: sessionId,
     },
   });
+
+  useEffect(() => {
+    if (form.values.m1Status) {
+      form.setValues({
+        m1: null,
+      });
+    }
+    if (form.values.m2Status) {
+      form.setValues({
+        m2: null,
+      });
+    }
+  }, [form.values.m1Status, form.values.m2Status]);
 
   useEffect(() => {
     if (!isEdit || !initialValues?.sessionId) return;
@@ -56,6 +81,9 @@ export const TimingFormModal = ({
             .second(Number(initialValues.m1.split(".")[2]))
             .toDate()
         : null,
+      m1Skis: initialValues.m1Skis,
+      m1Status: initialValues.m1Status,
+      m2Status: initialValues.m2Status,
       //@ts-ignore
       m2: initialValues.m2
         ? dayjs()
@@ -103,9 +131,37 @@ export const TimingFormModal = ({
             {...form.getInputProps("athleteId")}
           />
           <Space h={"xl"} />
-          <TimingInput label="Manche 1" {...form.getInputProps("m1")} />
+          <Title size={"20px"}>Manche 1</Title>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <TimingInput label="Temps" {...form.getInputProps("m1")} />
+            <StatusRadioGroup {...form.getInputProps("m1Status")} />
+            <TextInput
+              size="sm"
+              label="Skis"
+              {...form.getInputProps("m1Skis")}
+            />
+          </div>
           <Space h={"xl"} />
-          <TimingInput label="Manche 2" {...form.getInputProps("m2")} />
+          <Title size={"20px"}>Manche 2</Title>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <TimingInput label="Temps" {...form.getInputProps("m2")} />
+            <StatusRadioGroup {...form.getInputProps("m2Status")} />
+            <TextInput
+              size="sm"
+              label="Skis"
+              {...form.getInputProps("m2Skis")}
+            />
+          </div>
           <Space h={"xl"} />
           <Group position={isEdit ? "apart" : "right"} mt="md">
             {isEdit && (
