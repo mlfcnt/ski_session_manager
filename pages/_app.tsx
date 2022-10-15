@@ -51,7 +51,7 @@ export default function App(props: AppProps) {
             }}
           >
             <Title style={{ marginBottom: "20px", textAlign: "center" }}>
-              <Link href={"/"}>FFS timing session</Link>
+              <a href="/">FFS timing session</a>
             </Title>
             <Component {...pageProps} />
           </div>

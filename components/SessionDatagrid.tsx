@@ -108,7 +108,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
             m1: SkiFormattedTime;
             m2: SkiFormattedTime;
           }) => {
-            if (!m1 || !m2) return "X";
+            if (!m1 || !m2) return "DNS";
             return millisecToSkiFormat(addTimes(m1, m2));
           }}
         />
