@@ -85,6 +85,7 @@ const DaySessions = ({
           </Link>
           <IconTrash
             color="red"
+            size={20}
             style={{ marginLeft: "10px", cursor: "pointer" }}
             onClick={() => {
               const confirm = window.confirm(

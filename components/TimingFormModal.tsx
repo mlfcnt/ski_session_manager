@@ -76,12 +76,12 @@ export const TimingFormModal = ({
       athleteId: String(
         initialValues.athleteId
       ) as unknown as Timing["athleteId"],
-      m1: initialValues.m1,
+      m1: initialValues.m1 || initialFormValues.m1,
       m1Skis: initialValues.m1Skis,
       m2Skis: initialValues.m2Skis,
       m1Status: initialValues.m1Status,
       m2Status: initialValues.m2Status,
-      m2: initialValues.m2,
+      m2: initialValues.m2 || initialFormValues.m2,
     });
   }, [
     initialValues?.athleteId,
@@ -110,7 +110,7 @@ export const TimingFormModal = ({
               ...values,
               athleteId: Number(values.athleteId),
               m1: values.m1 !== "00.00.00" ? values.m1 : null,
-              m2: values.m2 !== "00.00.00" ? values.m1 : null,
+              m2: values.m2 !== "00.00.00" ? values.m2 : null,
             };
             if (isEdit) {
               updateTiming({ ...valuesToSave, id: initialValues!.id });
