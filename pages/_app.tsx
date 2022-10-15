@@ -43,7 +43,7 @@ export default function App(props: AppProps) {
           <div
             style={{
               backgroundImage: `url("https://ffs.fr/wp-content/themes/ffs/library/images/logo-ffs.svg")`,
-              backgroundSize: "30%",
+              backgroundSize: "15vh",
               backgroundPositionY: "80vh",
               backgroundPositionX: "center",
               backgroundRepeat: "no-repeat",
