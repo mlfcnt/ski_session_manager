@@ -66,7 +66,7 @@ export const TimingFormModal = ({
             .toDate()
         : null,
     });
-  }, [isEdit, initialValues]);
+  }, [isEdit, initialValues, form]);
 
   const handleClose = () => {
     form.reset();
