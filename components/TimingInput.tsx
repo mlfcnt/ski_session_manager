@@ -1,16 +1,12 @@
-import { TimeInput, TimeInputProps } from "@mantine/dates";
+import { TextInput, TextInputProps } from "@mantine/core";
 import React from "react";
 
-export const TimingInput = ({ ...props }: TimeInputProps) => {
+export const TimingInput = ({ ...props }: TextInputProps) => {
   return (
-    <TimeInput
-      defaultValue={null}
-      withSeconds
+    <TextInput
+      label="temps"
+      description="Exemple du format attendu: 01.59.99"
       variant="filled"
-      clearable
-      hoursLabel="min"
-      minutesLabel="sec"
-      secondsLabel="hundredth"
       {...props}
     />
   );

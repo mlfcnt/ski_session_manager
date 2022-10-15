@@ -11,6 +11,7 @@ import { useForm } from "@mantine/form";
 import { Session } from "api/session-api";
 import {
   CreateTimingDTO,
+  MStatus,
   Timing,
   useCreateTiming,
   useDeleteTiming,
@@ -18,11 +19,11 @@ import {
 } from "api/timings-api";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
-import { SkiFormattedTime } from "types";
 import { SelectAthlete } from "./Selects/SelectAthlete";
 import { TimingInput } from "./TimingInput";
 import { IconTrash, IconDeviceFloppy } from "@tabler/icons";
 import { StatusRadioGroup } from "./StatusRadioGroup";
+import { SkiFormattedTime } from "types";
 
 type Props = {
   sessionId: Session["id"];
@@ -43,52 +44,31 @@ export const TimingFormModal = ({
   const { mutate: updateTiming } = useUpdateTiming();
   const { mutate: deleteTiming } = useDeleteTiming();
 
+  const initialFormValues = {
+    athleteId: null as unknown as Timing["athleteId"],
+    m1: "00.00.00" as SkiFormattedTime,
+    m2: "00.00.00" as SkiFormattedTime,
+    m1Skis: "",
+    m2Skis: "",
+    m1Status: undefined,
+    m2Status: undefined,
+    sessionId: sessionId,
+  };
+
+  const timeValidator = (value: string) =>
+    !value || dayjs(`${value}0`, "mm.ss.SSS", true).isValid()
+      ? null
+      : "Format invalide";
+
   const form = useForm<CreateTimingDTO>({
-    initialValues: {
-      athleteId: null as unknown as Timing["athleteId"],
-      m1: null,
-      m2: null,
-      m1Skis: "",
-      m2Skis: "",
-      m1Status: undefined,
-      m2Status: undefined,
-      sessionId: sessionId,
+    initialValues: initialFormValues,
+    validate: {
+      m1: timeValidator,
+      m2: timeValidator,
     },
+    validateInputOnBlur: true,
+    validateInputOnChange: true,
   });
-
-  useEffect(() => {
-    if (!isEdit) {
-      form.reset();
-    }
-  }, [isEdit]);
-
-  useEffect(() => {
-    if (form.values.m1Status) {
-      form.setValues({
-        m1: null,
-      });
-    }
-    if (form.values.m2Status) {
-      form.setValues({
-        m2: null,
-      });
-    }
-    if (form.values.m1) {
-      form.setValues({
-        m1Status: null,
-      });
-    }
-    if (form.values.m2) {
-      form.setValues({
-        m2Status: null,
-      });
-    }
-  }, [
-    form.values.m1Status,
-    form.values.m2Status,
-    form.values.m1,
-    form.values.m2,
-  ]);
 
   useEffect(() => {
     if (!isEdit || !initialValues?.sessionId) return;
@@ -96,54 +76,48 @@ export const TimingFormModal = ({
       athleteId: String(
         initialValues.athleteId
       ) as unknown as Timing["athleteId"],
-      m1: initialValues.m1
-        ? (dayjs()
-            .hour(Number(initialValues.m1.split(".")[0]))
-            .minute(Number(initialValues.m1.split(".")[1]))
-            .second(Number(initialValues.m1.split(".")[2]))
-            .toDate() as unknown as SkiFormattedTime)
-        : null,
+      m1: initialValues.m1,
       m1Skis: initialValues.m1Skis,
       m2Skis: initialValues.m2Skis,
       m1Status: initialValues.m1Status,
       m2Status: initialValues.m2Status,
-      m2: initialValues.m2
-        ? (dayjs()
-            .hour(Number(initialValues.m2.split(".")[0]))
-            .minute(Number(initialValues.m2.split(".")[1]))
-            .second(Number(initialValues.m2.split(".")[2]))
-            .toDate() as unknown as SkiFormattedTime)
-        : null,
+      m2: initialValues.m2,
     });
-  }, [initialValues?.id]);
+  }, [
+    initialValues?.athleteId,
+    initialValues?.m1,
+    initialValues?.m1Skis,
+    initialValues?.m1Status,
+    initialValues?.m2,
+    initialValues?.m2Skis,
+    initialValues?.m2Status,
+    initialValues?.sessionId,
+    isEdit,
+  ]);
 
   const handleClose = () => {
+    form.reset();
     onClose();
   };
 
   return (
-    <Modal opened={opened} onClose={handleClose}>
+    <Modal opened={opened} onClose={handleClose} overlayBlur={2}>
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
           onSubmit={form.onSubmit((values) => {
-            handleClose();
             // les composants de timings revoient des heures/min/sec.. donc je dois salement tricher sur le format...
             const valuesToSave = {
               ...values,
               athleteId: Number(values.athleteId),
-              m1: !!values.m1
-                ? (dayjs(values.m1).format("HH.mm.ss") as SkiFormattedTime)
-                : null,
-              m2: !!values.m2
-                ? (dayjs(values.m2).format("HH.mm.ss") as SkiFormattedTime)
-                : null,
+              m1: values.m1 !== "00.00.00" ? values.m1 : null,
+              m2: values.m2 !== "00.00.00" ? values.m1 : null,
             };
             if (isEdit) {
               updateTiming({ ...valuesToSave, id: initialValues!.id });
-              return;
             } else {
               createTiming(valuesToSave);
             }
+            handleClose();
           })}
         >
           <SelectAthlete
@@ -159,8 +133,24 @@ export const TimingFormModal = ({
               flexDirection: "column",
             }}
           >
-            <TimingInput label="Temps" {...form.getInputProps("m1")} />
-            <StatusRadioGroup {...form.getInputProps("m1Status")} />
+            <TimingInput
+              label="Temps"
+              {...form.getInputProps("m1")}
+              onChange={(e) => {
+                form.setFieldValue(
+                  "m1",
+                  (e?.target?.value as SkiFormattedTime) || initialFormValues.m1
+                );
+                form.setFieldValue("m1Status", null);
+              }}
+            />
+            <StatusRadioGroup
+              {...form.getInputProps("m1Status")}
+              onChange={(e: MStatus) => {
+                form.setFieldValue("m1Status", e);
+                form.setFieldValue("m1", initialFormValues.m1);
+              }}
+            />
             <TextInput
               size="sm"
               label="Skis"
@@ -176,8 +166,24 @@ export const TimingFormModal = ({
               flexDirection: "column",
             }}
           >
-            <TimingInput label="Temps" {...form.getInputProps("m2")} />
-            <StatusRadioGroup {...form.getInputProps("m2Status")} />
+            <TimingInput
+              label="Temps"
+              {...form.getInputProps("m2")}
+              onChange={(e) => {
+                form.setFieldValue(
+                  "m2",
+                  (e?.target?.value as SkiFormattedTime) || initialFormValues.m2
+                );
+                form.setFieldValue("m2Status", null);
+              }}
+            />
+            <StatusRadioGroup
+              {...form.getInputProps("m2Status")}
+              onChange={(e: MStatus) => {
+                form.setFieldValue("m2Status", e);
+                form.setFieldValue("m2", initialFormValues.m2);
+              }}
+            />
             <TextInput
               size="sm"
               label="Skis"

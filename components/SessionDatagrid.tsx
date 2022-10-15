@@ -162,6 +162,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         opened={showCreateTimingModal}
         onClose={() => {
           setShowCreateTimingModal(!showCreateTimingModal);
+          setSelectedRowData(null);
         }}
         isEdit={!!selectedRowData?.sessionId}
         initialValues={

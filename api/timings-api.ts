@@ -17,7 +17,7 @@ export type Timing = {
   athleteName: Athlete["name"];
 };
 
-type MStatus = "ABD" | "DSQ";
+export type MStatus = "ABD" | "DSQ";
 
 const fetchTimingsBySessionId = async (
   id?: Session["id"]
