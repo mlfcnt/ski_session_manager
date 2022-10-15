@@ -1,5 +1,6 @@
 export type SkiFormattedTime =
-  `${number}.${number}${number}.${number}${number}`;
+  | `${number}.${number}${number}.${number}${number}`
+  | `${number}${number}:${number}${number}`;
 
 export type Discipline = "GS" | "SL" | "SG" | "DH" | "AC";
 export type SnowCondition =

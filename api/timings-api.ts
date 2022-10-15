@@ -66,3 +66,51 @@ export const useCreateTiming = () => {
   );
   return mutation;
 };
+export type UpdateTimingDTO = Partial<CreateTimingDTO> & { id: Timing["id"] };
+
+const updateTiming = async (toUpdate: UpdateTimingDTO) => {
+  const { data, error } = await supabase
+    .from("timings")
+    .update(toUpdate)
+    .eq("id", toUpdate.id)
+    .select();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useUpdateTiming = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (toUpdate: UpdateTimingDTO) => updateTiming(toUpdate),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["timings"]);
+      },
+    }
+  );
+  return mutation;
+};
+
+const deleteTiming = async (timingId: Timing["id"]) => {
+  const { data, error } = await supabase
+    .from("timings")
+    .delete()
+    .eq("id", timingId);
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const useDeleteTiming = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    (timingId: Timing["id"]) => deleteTiming(timingId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["timings"]);
+      },
+    }
+  );
+  return mutation;
+};

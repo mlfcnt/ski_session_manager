@@ -5,7 +5,6 @@ export const TimingInput = ({ ...props }: TimeInputProps) => {
   return (
     <TimeInput
       defaultValue={null}
-      label="Pick time"
       withSeconds
       variant="filled"
       clearable

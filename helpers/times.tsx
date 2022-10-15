@@ -26,5 +26,17 @@ export const millisecToSkiFormat = (
   n: number | null
 ): SkiFormattedTime | null => {
   if (!n) return null;
-  return dayjs(n).format("m.ss.SSS").substring(0, 7) as SkiFormattedTime;
+  const hasMin = n > 59999;
+  if (hasMin) {
+    return dayjs(n).format("m.ss.SSS").substring(0, 7) as SkiFormattedTime;
+  } else {
+    return dayjs(n).format("ss:SSS").substring(0, 5) as SkiFormattedTime;
+  }
+};
+
+export const formatTimeForDx = (time: SkiFormattedTime) => {
+  if (!time) return "X";
+  const [minutes, seconds, hundredth] = time.split(".");
+  if (minutes === "00") return `${seconds}:${hundredth}`;
+  return time;
 };

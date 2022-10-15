@@ -1,11 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import DataGrid, { Column, Grouping } from "devextreme-react/data-grid";
-import { addTimes, millisecToSkiFormat } from "../helpers/times";
+import DataGrid, {
+  Column,
+  Grouping,
+  Selection,
+} from "devextreme-react/data-grid";
+import {
+  addTimes,
+  formatTimeForDx,
+  millisecToSkiFormat,
+} from "../helpers/times";
 import { SkiFormattedTime } from "../types";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
 import { Button, Group, Space } from "@mantine/core";
-import { CreateTimingFormModal } from "./CreateTimingFormModal";
+import { TimingFormModal } from "./TimingFormModal";
+import { IconEdit } from "@tabler/icons";
 
 type Props = {
   sessionId: Session["id"];
@@ -13,6 +22,7 @@ type Props = {
 
 export const SessionDatagrid = ({ sessionId }: Props) => {
   const [showCreateTimingModal, setShowCreateTimingModal] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState<Timing | null>(null);
   const { data: timings } = useTimingsBySessionId(sessionId);
 
   const gridRef = useRef<DataGrid>(null);
@@ -34,8 +44,14 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         columnAutoWidth
         width={"100vw"}
         ref={gridRef}
+        keyExpr="id"
+        onRowClick={(e) => {
+          setSelectedRowData(e.data);
+          setShowCreateTimingModal(true);
+        }}
       >
         <Grouping autoExpandAll={false} />
+        <Selection mode={"single"} />
 
         <Column
           dataField="rank"
@@ -56,7 +72,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           caption="1"
           alignment={"right"}
           calculateDisplayValue={({ m1 }: { m1: SkiFormattedTime }) =>
-            m1 || "X"
+            formatTimeForDx(m1)
           }
         />
         <Column
@@ -64,7 +80,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           caption="2"
           alignment={"right"}
           calculateDisplayValue={({ m2 }: { m2: SkiFormattedTime }) =>
-            m2 || "X"
+            formatTimeForDx(m2)
           }
         />
         <Column
@@ -98,15 +114,28 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         />
       </DataGrid>
       <Space h={"xl"} />
-      <Group position="right" style={{ marginRight: "20px" }}>
-        <Button onClick={() => setShowCreateTimingModal(true)}>Ajouter</Button>
+      <Group position="right" style={{ marginRight: "15px" }}>
+        <Button
+          onClick={() => {
+            setSelectedRowData(null);
+            setShowCreateTimingModal(true);
+          }}
+        >
+          Ajouter
+        </Button>
       </Group>
-      <CreateTimingFormModal
+      <TimingFormModal
         sessionId={sessionId}
         opened={showCreateTimingModal}
         onClose={() => {
           setShowCreateTimingModal(!showCreateTimingModal);
         }}
+        isEdit={!!selectedRowData?.sessionId}
+        initialValues={
+          !!selectedRowData?.sessionId
+            ? { ...selectedRowData, id: selectedRowData.id }
+            : undefined
+        }
       />
     </>
   );

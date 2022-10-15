@@ -5,7 +5,6 @@ import { useAthletes, useCreateAthlete } from "../../api/athletes-api";
 export const SelectAthlete = ({ ...props }: Omit<SelectProps, "data">) => {
   const { data: athletes } = useAthletes();
   const { mutateAsync: createAthlete } = useCreateAthlete();
-
   return (
     <Select
       data={(athletes || [])

@@ -42,8 +42,9 @@ export default function App(props: AppProps) {
         <QueryClientProvider client={queryClient}>
           <div
             style={{
-              backgroundImage: `url("https://static8.depositphotos.com/1491329/1068/i/950/depositphotos_10687474-stock-photo-funny-hamster.jpg")`,
-              backgroundPositionY: "45vh",
+              backgroundImage: `url("https://ffs.fr/wp-content/themes/ffs/library/images/logo-ffs.svg")`,
+              backgroundSize: "30%",
+              backgroundPositionY: "80vh",
               backgroundPositionX: "center",
               backgroundRepeat: "no-repeat",
               minHeight: "100vh",
