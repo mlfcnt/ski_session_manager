@@ -11,8 +11,8 @@ export type Timing = {
   m2: SkiFormattedTime | null;
   m1Skis?: string;
   m2Skis?: string;
-  m1Status?: MStatus;
-  m2Status?: MStatus;
+  m1Status?: MStatus | null;
+  m2Status?: MStatus | null;
   sessionId: Session["id"];
   athleteName: Athlete["name"];
 };

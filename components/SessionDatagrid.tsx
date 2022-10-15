@@ -83,17 +83,25 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           dataField="m1"
           caption="1"
           alignment={"right"}
-          calculateDisplayValue={({ m1 }: { m1: SkiFormattedTime }) =>
-            formatTimeForDx(m1)
-          }
+          calculateDisplayValue={({
+            m1,
+            m1Status,
+          }: {
+            m1: SkiFormattedTime;
+            m1Status: Timing["m1Status"];
+          }) => m1Status || formatTimeForDx(m1)}
         />
         <Column
           dataField="m2"
           caption="2"
           alignment={"right"}
-          calculateDisplayValue={({ m2 }: { m2: SkiFormattedTime }) =>
-            formatTimeForDx(m2)
-          }
+          calculateDisplayValue={({
+            m2,
+            m2Status,
+          }: {
+            m2: SkiFormattedTime;
+            m2Status: Timing["m2Status"];
+          }) => m2Status || formatTimeForDx(m2)}
         />
         <Column
           dataField="total"
@@ -106,12 +114,19 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           calculateSortValue={({
             m1,
             m2,
+            m1Status,
+            m2Status,
           }: {
             m1: SkiFormattedTime;
             m2: SkiFormattedTime;
+            m1Status: Timing["m1Status"];
+            m2Status: Timing["m2Status"];
           }) => {
-            if (!m1 || !m2) return 1000;
-            return millisecToSkiFormat(addTimes(m1, m2));
+            if (m1Status || m2Status || !m1 || !m2) {
+              return 100_000_000_000_000;
+            } else {
+              return addTimes(m1, m2);
+            }
           }}
           calculateDisplayValue={({
             m1,
@@ -125,7 +140,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
             m2Status: Timing["m2Status"];
           }) => {
             if (m1Status) return m1Status;
-            if (m2Status) return m1Status;
+            if (m2Status) return m2Status;
             if (!m1 || !m2) return "DNS";
             return millisecToSkiFormat(addTimes(m1, m2));
           }}

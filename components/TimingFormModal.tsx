@@ -42,6 +42,7 @@ export const TimingFormModal = ({
   const { mutate: createTiming } = useCreateTiming();
   const { mutate: updateTiming } = useUpdateTiming();
   const { mutate: deleteTiming } = useDeleteTiming();
+
   const form = useForm<CreateTimingDTO>({
     initialValues: {
       athleteId: null as unknown as Timing["athleteId"],
@@ -56,6 +57,12 @@ export const TimingFormModal = ({
   });
 
   useEffect(() => {
+    if (!isEdit) {
+      form.reset();
+    }
+  }, [form, isEdit]);
+
+  useEffect(() => {
     if (form.values.m1Status) {
       form.setValues({
         m1: null,
@@ -66,7 +73,22 @@ export const TimingFormModal = ({
         m2: null,
       });
     }
-  }, [form.values.m1Status, form.values.m2Status]);
+    if (form.values.m1) {
+      form.setValues({
+        m1Status: null,
+      });
+    }
+    if (form.values.m2) {
+      form.setValues({
+        m2Status: null,
+      });
+    }
+  }, [
+    form.values.m1Status,
+    form.values.m2Status,
+    form.values.m1,
+    form.values.m2,
+  ]);
 
   useEffect(() => {
     if (!isEdit || !initialValues?.sessionId) return;
@@ -82,6 +104,7 @@ export const TimingFormModal = ({
             .toDate()
         : null,
       m1Skis: initialValues.m1Skis,
+      m2Skis: initialValues.m2Skis,
       m1Status: initialValues.m1Status,
       m2Status: initialValues.m2Status,
       //@ts-ignore
@@ -96,7 +119,6 @@ export const TimingFormModal = ({
   }, [initialValues?.id]);
 
   const handleClose = () => {
-    form.reset();
     onClose();
   };
 
