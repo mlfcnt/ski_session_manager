@@ -18,7 +18,9 @@ export const SelectSnowCondition = ({
           { value: "ARTIF DURE", label: "ARTIF DURE" },
           { value: "ARTIF ARROSÉE", label: "ARTIF ARROSÉE" },
           { value: "INJECTÉE", label: "INJECTÉE" },
-        ]}
+          { value: "SNOWFARMING", label: "SNOWFARMING" },
+          { value: "SALÉE", label: "SALÉE" },
+        ].sort((a, b) => a.label.localeCompare(b.label))}
         defaultValue={value}
         size="xs"
         variant="filled"
