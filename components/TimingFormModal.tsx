@@ -60,7 +60,7 @@ export const TimingFormModal = ({
     if (!isEdit) {
       form.reset();
     }
-  }, [form, isEdit]);
+  }, [isEdit]);
 
   useEffect(() => {
     if (form.values.m1Status) {

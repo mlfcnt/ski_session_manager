@@ -28,6 +28,7 @@ const Home: NextPage = () => {
       <Stack justify={"center"}>
         <DatePicker
           locale="fr"
+          inputFormat="ddd d MMMM YYYY"
           weekendDays={[10]}
           placeholder="Choisissez la date"
           label="Ouvrir une session existante"
@@ -76,7 +77,7 @@ const DaySessions = ({
   return (
     <ul>
       {sessionsForTheDay.map((x) => (
-        <li key={x.name}>
+        <li key={x.id}>
           <Link href={`/session/${x.id}`}>
             <a>{x.name}</a>
           </Link>

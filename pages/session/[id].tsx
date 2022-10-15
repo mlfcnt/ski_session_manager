@@ -14,9 +14,16 @@ const Session = () => {
 
   const sessionId = Number(id);
 
-  const { data: session, isLoading } = useSession(sessionId);
+  const { data: session, isLoading, error } = useSession(sessionId);
   const { mutate: updateSession } = useUpdateSession();
 
+  if (error) {
+    return (
+      <h3 style={{ textAlign: "center", color: "red" }}>
+        Impossible de retrouver cette session. Elle a peut etre été supprimée
+      </h3>
+    );
+  }
   if (isLoading || !session)
     return (
       <Group position="center">
