@@ -1,4 +1,4 @@
-import { Button, Group, Loader, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Loader, Stack, Text } from "@mantine/core";
 import { DatePicker, isSameDate } from "@mantine/dates";
 import dayjs from "dayjs";
 import type { NextPage } from "next";
@@ -8,7 +8,6 @@ import styles from "../styles/Home.module.css";
 
 import Link from "next/link";
 import { CreateSessionForm } from "@/components/CreateSessionForm";
-import { SelectAthlete } from "@/components/Selects/SelectAthlete";
 
 const Home: NextPage = () => {
   const { data: sessions, isLoading } = useSessions();

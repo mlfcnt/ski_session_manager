@@ -44,7 +44,6 @@ export const TimingFormModal = ({
   });
 
   useEffect(() => {
-    form.reset();
     if (!isEdit || !initialValues?.sessionId) return;
     form.setValues({
       //@ts-ignore
@@ -66,7 +65,7 @@ export const TimingFormModal = ({
             .toDate()
         : null,
     });
-  }, [isEdit, initialValues, form]);
+  }, [initialValues?.id]);
 
   const handleClose = () => {
     form.reset();

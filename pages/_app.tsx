@@ -5,10 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import { useEffect } from "react";
-import Link from "next/link";
 import "devextreme/dist/css/dx.light.css";
 import frMessages from "devextreme/localization/messages/fr.json";
 import { locale, loadMessages } from "devextreme/localization";
+import Link from "next/link";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -51,7 +51,7 @@ export default function App(props: AppProps) {
             }}
           >
             <Title style={{ marginBottom: "20px", textAlign: "center" }}>
-              <a href="/">FFS timing session</a>
+              <Link href="/">FFS timing session</Link>
             </Title>
             <Component {...pageProps} />
           </div>

@@ -1,7 +1,7 @@
 import { Group, Loader, SimpleGrid, Space, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React from "react";
 import { useSession, useUpdateSession } from "../../api/session-api";
 import { SelectDiscipline } from "../../components/Selects/SelectDiscipline";
 import { SelectSnowCondition } from "../../components/Selects/SelectSnowCondition";

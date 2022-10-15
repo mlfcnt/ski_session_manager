@@ -1,4 +1,4 @@
-import { Center, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 import React from "react";
 import { Weather } from "../../types";
 
