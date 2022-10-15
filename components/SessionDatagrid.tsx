@@ -73,7 +73,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
               <span>{athleteName}</span>{" "}
               {(m1Skis || m2Skis) && (
                 <span style={{ color: "grey", fontStyle: "italic" }}>
-                  | skis : {m1Skis || "?"} - {m2Skis || "?"}
+                  | {m1Skis || "?"} - {m2Skis || "?"}
                 </span>
               )}
             </div>
