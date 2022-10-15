@@ -93,27 +93,26 @@ export const TimingFormModal = ({
   useEffect(() => {
     if (!isEdit || !initialValues?.sessionId) return;
     form.setValues({
-      //@ts-ignore
-      athleteId: String(initialValues.athleteId),
-      //@ts-ignore
+      athleteId: String(
+        initialValues.athleteId
+      ) as unknown as Timing["athleteId"],
       m1: initialValues.m1
-        ? dayjs()
+        ? (dayjs()
             .hour(Number(initialValues.m1.split(".")[0]))
             .minute(Number(initialValues.m1.split(".")[1]))
             .second(Number(initialValues.m1.split(".")[2]))
-            .toDate()
+            .toDate() as unknown as SkiFormattedTime)
         : null,
       m1Skis: initialValues.m1Skis,
       m2Skis: initialValues.m2Skis,
       m1Status: initialValues.m1Status,
       m2Status: initialValues.m2Status,
-      //@ts-ignore
       m2: initialValues.m2
-        ? dayjs()
+        ? (dayjs()
             .hour(Number(initialValues.m2.split(".")[0]))
             .minute(Number(initialValues.m2.split(".")[1]))
             .second(Number(initialValues.m2.split(".")[2]))
-            .toDate()
+            .toDate() as unknown as SkiFormattedTime)
         : null,
     });
   }, [initialValues?.id]);
