@@ -4,7 +4,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string.
     # every day at midnight
-    - cron:  '0 0 * * *'
+    - cron:  '*/5 * * * *'
 
 jobs:
   pinger_job:
