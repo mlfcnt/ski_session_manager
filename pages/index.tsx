@@ -82,6 +82,9 @@ const DaySessions = ({
           <Link href={`/session/${session.id}`}>
             <a>{session.name}</a>
           </Link>
+          <span style={{ marginLeft: "10px" }}>
+            ({session.discipline} - {session.snowCondition} - {session.weather})
+          </span>
           <IconTrash
             color="red"
             size={20}
