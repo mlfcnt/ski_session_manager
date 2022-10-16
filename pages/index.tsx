@@ -29,7 +29,6 @@ const Home: NextPage = () => {
       <Stack justify={"center"}>
         <DatePicker
           locale="fr"
-          inputFormat="ddd d MMMM YYYY"
           weekendDays={[10]}
           placeholder="Choisissez la date"
           label="Ouvrir une session existante"
