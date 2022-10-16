@@ -199,7 +199,12 @@ export const TimingFormModal = ({
                 leftIcon={<IconTrash />}
                 onClick={() => {
                   handleClose();
-                  deleteTiming(initialValues!.id);
+                  const confirm = window.confirm(
+                    "Etes vous sur de vouloir supprimer cette entrée ?"
+                  );
+                  if (confirm) {
+                    deleteTiming(initialValues!.id);
+                  }
                 }}
               >
                 Supprimer
