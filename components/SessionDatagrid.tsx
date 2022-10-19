@@ -63,13 +63,13 @@ export const SessionDatagrid = ({ session }: Props) => {
           alignment="center"
           cellRender={(e) => e.rowIndex + 1}
           fixed={session.mode === "TRAINING"}
-          fixedPosition="left"
+          fixedPosition={session.mode === "TRAINING" && "left"}
         />
         <Column
           caption="Coureur"
           dataField={"athleteName"}
           fixed={session.mode === "TRAINING"}
-          fixedPosition="left"
+          fixedPosition={session.mode === "TRAINING" && "left"}
         />
         <Column
           dataField={"m1"}
