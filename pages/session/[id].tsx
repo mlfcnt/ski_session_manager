@@ -43,20 +43,20 @@ const Session = () => {
         <SelectDiscipline
           value={session.discipline}
           onChange={(newValue) =>
-            newValue && updateSession({ discipline: newValue, id: session.id })
+            newValue && updateSession({ discipline: newValue, id: sessionId })
           }
         />
         <SelectSnowCondition
           value={session.snowCondition}
           onChange={(newValue) =>
             newValue &&
-            updateSession({ snowCondition: newValue, id: session.id })
+            updateSession({ snowCondition: newValue, id: sessionId })
           }
         />
         <SelectWeather
           value={session.weather}
           onChange={(newValue) =>
-            newValue && updateSession({ weather: newValue, id: session.id })
+            newValue && updateSession({ weather: newValue, id: sessionId })
           }
         />
       </SimpleGrid>
