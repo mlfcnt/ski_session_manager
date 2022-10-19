@@ -152,6 +152,7 @@ export const SessionDatagrid = ({ session }: Props) => {
           sortIndex={0}
           alignment="right"
           visible={session.mode === "RACE"}
+          width={100}
           calculateSortValue={({
             m1,
             m2,
