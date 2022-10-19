@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import DataGrid, {
   Column,
+  ColumnFixing,
   Grouping,
   Scrolling,
   Selection,
@@ -41,7 +42,7 @@ export const SessionDatagrid = ({ session }: Props) => {
     <>
       <DataGrid<Timing>
         dataSource={timings}
-        // rowAlternationEnabled
+        rowAlternationEnabled
         showBorders
         columnAutoWidth
         width={"100vw"}
@@ -52,6 +53,7 @@ export const SessionDatagrid = ({ session }: Props) => {
           setShowCreateTimingModal(true);
         }}
       >
+        <ColumnFixing enabled />
         <Grouping autoExpandAll={false} />
         <Selection mode={"single"} />
         <Scrolling showScrollbar />
