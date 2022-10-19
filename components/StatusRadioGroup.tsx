@@ -8,6 +8,7 @@ export const StatusRadioGroup = ({
     <Radio.Group {...props} style={{ display: "flex", justifyContent: "end" }}>
       <Radio value="ABD" label="ABD" />
       <Radio value="DSQ" label="DSQ" />
+      <Radio value="No Time" label="No Time" />
     </Radio.Group>
   );
 };
