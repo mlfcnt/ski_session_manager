@@ -9,15 +9,33 @@ export type Timing = {
   athleteId: Athlete["id"];
   m1: SkiFormattedTime | null;
   m2: SkiFormattedTime | null;
+  m3: SkiFormattedTime | null;
+  m4: SkiFormattedTime | null;
+  m5: SkiFormattedTime | null;
+  m6: SkiFormattedTime | null;
+  m7: SkiFormattedTime | null;
+  m8: SkiFormattedTime | null;
   m1Skis?: string;
   m2Skis?: string;
+  m3Skis?: string;
+  m4Skis?: string;
+  m5Skis?: string;
+  m6Skis?: string;
+  m7Skis?: string;
+  m8Skis?: string;
   m1Status?: MStatus | null;
   m2Status?: MStatus | null;
+  m3Status?: MStatus | null;
+  m4Status?: MStatus | null;
+  m5Status?: MStatus | null;
+  m6Status?: MStatus | null;
+  m7Status?: MStatus | null;
+  m8Status?: MStatus | null;
   sessionId: Session["id"];
   athleteName: Athlete["name"];
 };
 
-export type MStatus = "ABD" | "DSQ" | "No Time";
+export type MStatus = "DNF" | "DSQ" | "SC" | "PP";
 
 const fetchTimingsBySessionId = async (
   id?: Session["id"]
@@ -25,7 +43,7 @@ const fetchTimingsBySessionId = async (
   const { data: timings, error } = await supabase
     .from("timings")
     .select(
-      `id,m1,m2,m1Skis, m2Skis, m1Status, m2Status, athleteId, sessionId, athleteId (
+      `id,m1,m2,m3,m4,m5,m6,m7,m8,m1Skis, m2Skis,m3Skis, m3Skis,m4Skis,m5Skis,m6Skis,m7Skis,m8Skis, m1Status, m2Status,m3Status,m4Status,m5Status,m6Status,m7Status,m8Status, athleteId, sessionId, athleteId (
         id, name
     ) `
     )

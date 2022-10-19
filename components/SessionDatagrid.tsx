@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import DataGrid, {
   Column,
   Grouping,
+  Scrolling,
   Selection,
 } from "devextreme-react/data-grid";
 import {
@@ -12,17 +13,17 @@ import {
 import { SkiFormattedTime } from "../types";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
-import { Button, Group, Space } from "@mantine/core";
-import { TimingFormModal } from "./TimingFormModal";
+import { Button, Group, Loader, Space } from "@mantine/core";
+import { TimingFormModal } from "./TimingForm/TimingFormModal";
 
 type Props = {
-  sessionId: Session["id"];
+  session: Session;
 };
 
-export const SessionDatagrid = ({ sessionId }: Props) => {
+export const SessionDatagrid = ({ session }: Props) => {
   const [showCreateTimingModal, setShowCreateTimingModal] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState<Timing | null>(null);
-  const { data: timings } = useTimingsBySessionId(sessionId);
+  const { data: timings } = useTimingsBySessionId(session.id);
 
   const gridRef = useRef<DataGrid>(null);
 
@@ -33,6 +34,8 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
       sortIndex: 0,
     });
   }, [timings]);
+
+  if (!session.id) return <Loader />;
 
   return (
     <>
@@ -51,57 +54,94 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
       >
         <Grouping autoExpandAll={false} />
         <Selection mode={"single"} />
+        <Scrolling showScrollbar />
 
         <Column
           dataField="rank"
           caption="#"
           width={30}
+          alignment="center"
           cellRender={(e) => e.rowIndex + 1}
+          fixed
         />
+        <Column caption="Coureur" dataField={"athleteName"} fixed />
         <Column
-          caption="Coureur"
-          cellRender={({
-            data: { athleteName, m1Skis, m2Skis },
-          }: {
-            data: {
-              athleteName: Timing["athleteName"];
-              m1Skis: Timing["m1Skis"];
-              m2Skis: Timing["m2Skis"];
-            };
-          }) => (
-            <div>
-              <span>{athleteName}</span>{" "}
-              {(m1Skis || m2Skis) && (
-                <span style={{ color: "grey", fontStyle: "italic" }}>
-                  | {m1Skis || "?"} - {m2Skis || "?"}
-                </span>
-              )}
-            </div>
-          )}
-        />
-        <Column
-          dataField="m1"
-          caption="1"
+          dataField={"m1"}
+          caption={"1"}
           alignment={"right"}
-          calculateDisplayValue={({
-            m1,
-            m1Status,
-          }: {
-            m1: SkiFormattedTime;
-            m1Status: Timing["m1Status"];
-          }) => m1Status || formatTimeForDx(m1)}
+          calculateDisplayValue={(props: Timing) =>
+            props.m1Status || formatTimeForDx(props.m1 as SkiFormattedTime)
+          }
+          width={70}
         />
         <Column
-          dataField="m2"
-          caption="2"
+          dataField={"m2"}
+          caption={"2"}
           alignment={"right"}
-          calculateDisplayValue={({
-            m2,
-            m2Status,
-          }: {
-            m2: SkiFormattedTime;
-            m2Status: Timing["m2Status"];
-          }) => m2Status || formatTimeForDx(m2)}
+          calculateDisplayValue={(props: Timing) =>
+            props.m2Status || formatTimeForDx(props.m2 as SkiFormattedTime)
+          }
+          width={70}
+        />
+        <Column
+          dataField={"m3"}
+          caption={"3"}
+          alignment={"right"}
+          calculateDisplayValue={(props: Timing) =>
+            props.m3Status || formatTimeForDx(props.m3 as SkiFormattedTime)
+          }
+          width={70}
+          visible={session.mode === "TRAINING"}
+        />
+        <Column
+          dataField={"m4"}
+          caption={"4"}
+          alignment={"right"}
+          calculateDisplayValue={(props: Timing) =>
+            props.m4Status || formatTimeForDx(props.m4 as SkiFormattedTime)
+          }
+          width={70}
+          visible={session.mode === "TRAINING"}
+        />
+        <Column
+          dataField={"m5"}
+          caption={"5"}
+          alignment={"right"}
+          calculateDisplayValue={(props: Timing) =>
+            props.m5Status || formatTimeForDx(props.m5 as SkiFormattedTime)
+          }
+          width={70}
+          visible={session.mode === "TRAINING"}
+        />
+        <Column
+          dataField={"m6"}
+          caption={"6"}
+          alignment={"right"}
+          calculateDisplayValue={(props: Timing) =>
+            props.m6Status || formatTimeForDx(props.m6 as SkiFormattedTime)
+          }
+          width={70}
+          visible={session.mode === "TRAINING"}
+        />
+        <Column
+          dataField={"m7"}
+          caption={"7"}
+          alignment={"right"}
+          calculateDisplayValue={(props: Timing) =>
+            props.m7Status || formatTimeForDx(props.m7 as SkiFormattedTime)
+          }
+          width={70}
+          visible={session.mode === "TRAINING"}
+        />
+        <Column
+          dataField={"m8"}
+          caption={"8"}
+          alignment={"right"}
+          calculateDisplayValue={(props: Timing) =>
+            props.m8Status || formatTimeForDx(props.m8 as SkiFormattedTime)
+          }
+          width={70}
+          visible={session.mode === "TRAINING"}
         />
         <Column
           dataField="total"
@@ -111,6 +151,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
           sortOrder={"asc"}
           sortIndex={0}
           alignment="right"
+          visible={session.mode === "RACE"}
           calculateSortValue={({
             m1,
             m2,
@@ -158,7 +199,7 @@ export const SessionDatagrid = ({ sessionId }: Props) => {
         </Button>
       </Group>
       <TimingFormModal
-        sessionId={sessionId}
+        sessionId={session.id}
         opened={showCreateTimingModal}
         onClose={() => {
           setShowCreateTimingModal(!showCreateTimingModal);

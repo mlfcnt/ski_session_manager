@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { Discipline, SnowCondition, Weather } from "../types";
+import { Discipline, Mode, SnowCondition, Weather } from "../types";
 import { supabase } from "../utils/supabaseClient";
 import { useDeleteTimingsForSession } from "./timings-api";
 
@@ -18,6 +18,7 @@ export type Session = {
   discipline: Discipline;
   snowCondition: SnowCondition;
   weather: Weather;
+  mode: Mode;
 };
 
 export const useSessions = () =>
@@ -45,6 +46,7 @@ export type CreateSessionDTO = {
   discipline: Session["discipline"];
   snowCondition: Session["snowCondition"];
   weather: Session["weather"];
+  mode: Session["mode"];
 };
 
 const createSession = async (toCreate: CreateSessionDTO) => {

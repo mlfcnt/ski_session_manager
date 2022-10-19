@@ -35,7 +35,9 @@ const Session = () => {
       <Title size={30} weight="normal">
         {dayjs(session.date).format("DD MMMM YYYY")}
       </Title>
-      <Title size={20}>{session.name}</Title>
+      <Title size={20}>
+        {session.name} - {session.mode}
+      </Title>
       <Space h="xl" />
       <SimpleGrid cols={3}>
         <SelectDiscipline
@@ -59,7 +61,7 @@ const Session = () => {
         />
       </SimpleGrid>
       <Space h={"xl"} />
-      <SessionDatagrid sessionId={sessionId} />
+      <SessionDatagrid session={session} />
     </div>
   );
 };

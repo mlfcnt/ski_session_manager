@@ -7,6 +7,7 @@ import { DatePicker } from "@mantine/dates";
 import { SelectSnowCondition } from "./Selects/SelectSnowCondition";
 import { SelectWeather } from "./Selects/SelectWeather";
 import { Discipline, SnowCondition, Weather } from "types";
+import { SessionModesRadioGroup } from "./SessionModesRadioGroup";
 
 export const CreateSessionForm = () => {
   const { mutate: createSession } = useCreateSession();
@@ -17,6 +18,7 @@ export const CreateSessionForm = () => {
       discipline: null as unknown as Discipline,
       snowCondition: null as unknown as SnowCondition,
       weather: null as unknown as Weather,
+      mode: "TRAINING",
     },
   });
   return (
@@ -42,6 +44,7 @@ export const CreateSessionForm = () => {
           {...form.getInputProps("snowCondition")}
         />
         <SelectWeather required {...form.getInputProps("weather")} />
+        <SessionModesRadioGroup required {...form.getInputProps("mode")} />
         <Group position="right" mt="md">
           <Button type="submit">Lancer</Button>
         </Group>

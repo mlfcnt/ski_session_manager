@@ -7,9 +7,13 @@ export type SnowCondition =
   | "ARTIF"
   | "ARTIF DURE"
   | "ARTIF ARROSÉE"
-  | "INJECTÉE";
+  | "INJECTÉE"
+  | "Regel";
+
 export type Weather =
   | "Beau temps"
   | "Couvert"
   | "Jour blanc"
   | "Chute de neige";
+
+export type Mode = "RACE" | "TRAINING";

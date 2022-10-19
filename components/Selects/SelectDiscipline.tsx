@@ -14,7 +14,6 @@ export const SelectDiscipline = ({
       <Select
         label="Discipline"
         data={[
-          { value: "AC", label: "AC" },
           { value: "DH", label: "DH" },
           { value: "GS", label: "GS" },
           { value: "SG", label: "SG" },

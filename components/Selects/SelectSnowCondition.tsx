@@ -20,6 +20,7 @@ export const SelectSnowCondition = ({
           { value: "INJECTÉE", label: "INJECTÉE" },
           { value: "SNOWFARMING", label: "SNOWFARMING" },
           { value: "SALÉE", label: "SALÉE" },
+          { value: "REGEL", label: "REGEL" },
         ].sort((a, b) => a.label.localeCompare(b.label))}
         defaultValue={value}
         size="xs"
