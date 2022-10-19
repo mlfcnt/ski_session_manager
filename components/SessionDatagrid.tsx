@@ -68,8 +68,8 @@ export const SessionDatagrid = ({ session }: Props) => {
         <Column
           caption="Coureur"
           dataField={"athleteName"}
-          fixed={session.mode === "TRAINING"}
-          fixedPosition={session.mode === "TRAINING" && "left"}
+          // fixed={session.mode === "TRAINING"}
+          // fixedPosition={session.mode === "TRAINING" && "left"}
         />
         <Column
           dataField={"m1"}
