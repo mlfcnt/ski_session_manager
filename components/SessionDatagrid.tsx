@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import DataGrid, {
   Column,
-  ColumnFixing,
   Grouping,
   Scrolling,
   Selection,
@@ -53,7 +52,6 @@ export const SessionDatagrid = ({ session }: Props) => {
           setShowCreateTimingModal(true);
         }}
       >
-        <ColumnFixing enabled />
         <Grouping autoExpandAll={false} />
         <Selection mode={"single"} />
         <Scrolling showScrollbar />
@@ -64,8 +62,8 @@ export const SessionDatagrid = ({ session }: Props) => {
           width={30}
           alignment="center"
           cellRender={(e) => e.rowIndex + 1}
-          fixed={session.mode === "TRAINING"}
-          fixedPosition={session.mode === "TRAINING" && "left"}
+          // fixed={session.mode === "TRAINING"}
+          // fixedPosition={session.mode === "TRAINING" && "left"}
         />
         <Column
           caption="Coureur"
