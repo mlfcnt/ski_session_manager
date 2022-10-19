@@ -199,7 +199,7 @@ export const SessionDatagrid = ({ session }: Props) => {
         </Button>
       </Group>
       <TimingFormModal
-        sessionId={session.id}
+        session={session}
         opened={showCreateTimingModal}
         onClose={() => {
           setShowCreateTimingModal(!showCreateTimingModal);

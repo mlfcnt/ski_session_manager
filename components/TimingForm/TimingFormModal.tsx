@@ -16,7 +16,7 @@ import { MTimingBlock } from "./MTimingBlock";
 import { SkiFormattedTime } from "types";
 
 type Props = {
-  sessionId: Session["id"];
+  session: Session;
   opened: boolean;
   onClose: () => void;
   initialValues?: Partial<CreateTimingDTO> & { id: Timing["id"] };
@@ -24,7 +24,7 @@ type Props = {
 };
 
 export const TimingFormModal = ({
-  sessionId,
+  session,
   opened,
   onClose,
   initialValues,
@@ -52,7 +52,7 @@ export const TimingFormModal = ({
     m6Skis: "",
     m7Skis: "",
     m8Skis: "",
-    sessionId: sessionId,
+    sessionId: session.id,
   };
 
   const timeValidator = (value: string) =>
@@ -193,36 +193,41 @@ export const TimingFormModal = ({
             initialFormValues={initialFormValues}
             mNumber={2}
           />
-          <MTimingBlock
-            form={form}
-            initialFormValues={initialFormValues}
-            mNumber={3}
-          />
-          <MTimingBlock
-            form={form}
-            initialFormValues={initialFormValues}
-            mNumber={4}
-          />
-          <MTimingBlock
-            form={form}
-            initialFormValues={initialFormValues}
-            mNumber={5}
-          />
-          <MTimingBlock
-            form={form}
-            initialFormValues={initialFormValues}
-            mNumber={6}
-          />
-          <MTimingBlock
-            form={form}
-            initialFormValues={initialFormValues}
-            mNumber={7}
-          />
-          <MTimingBlock
-            form={form}
-            initialFormValues={initialFormValues}
-            mNumber={8}
-          />
+          {session.mode === "TRAINING" && (
+            <>
+              {" "}
+              <MTimingBlock
+                form={form}
+                initialFormValues={initialFormValues}
+                mNumber={3}
+              />
+              <MTimingBlock
+                form={form}
+                initialFormValues={initialFormValues}
+                mNumber={4}
+              />
+              <MTimingBlock
+                form={form}
+                initialFormValues={initialFormValues}
+                mNumber={5}
+              />
+              <MTimingBlock
+                form={form}
+                initialFormValues={initialFormValues}
+                mNumber={6}
+              />
+              <MTimingBlock
+                form={form}
+                initialFormValues={initialFormValues}
+                mNumber={7}
+              />
+              <MTimingBlock
+                form={form}
+                initialFormValues={initialFormValues}
+                mNumber={8}
+              />
+            </>
+          )}
 
           <Space h={"xl"} />
           <Group position={isEdit ? "apart" : "right"} mt="md">
