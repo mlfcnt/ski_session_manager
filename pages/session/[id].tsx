@@ -24,7 +24,7 @@ const Session = () => {
       </h3>
     );
   }
-  if (isLoading || !session)
+  if (isLoading || !session || !sessionId)
     return (
       <Group position="center">
         <Loader />
