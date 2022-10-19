@@ -41,7 +41,7 @@ export const SessionDatagrid = ({ session }: Props) => {
     <>
       <DataGrid<Timing>
         dataSource={timings}
-        rowAlternationEnabled
+        // rowAlternationEnabled
         showBorders
         columnAutoWidth
         width={"100vw"}
