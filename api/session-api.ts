@@ -3,6 +3,10 @@ import { useRouter } from "next/router";
 import { Discipline, Mode, SnowCondition, Weather } from "../types";
 import { supabase } from "../utils/supabaseClient";
 import { useDeleteTimingsForSession } from "./timings-api";
+import { groupBy } from "lodash";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 
 const fetchSessions = async () => {
   const { data, error } = await supabase.from("session").select("*");
@@ -127,4 +131,22 @@ export const useDeleteSession = () => {
     }
   );
   return mutation;
+};
+
+export const useWeeklySessions = () => {
+  const { data: sessions, isLoading } = useSessions();
+  if (!sessions?.length) return { isLoading, sessionsGrouppedByDay: [] };
+
+  const filterByCurrentWeek = (sessions || []).filter((session) =>
+    dayjs(session.date).isBetween(
+      dayjs().startOf("week"),
+      dayjs().endOf("week")
+    )
+  );
+
+  const grouppedByDay = groupBy(filterByCurrentWeek || [], (session) =>
+    dayjs(session.date)
+  );
+
+  return { isLoading, sessionsGrouppedByDay: grouppedByDay };
 };

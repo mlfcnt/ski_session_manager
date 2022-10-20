@@ -1,14 +1,13 @@
 import { Button, Group, Loader, Stack, Text } from "@mantine/core";
 import { DatePicker, isSameDate } from "@mantine/dates";
-import dayjs from "dayjs";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { Session, useDeleteSession, useSessions } from "../api/session-api";
+import { useSessions } from "../api/session-api";
 import styles from "../styles/Home.module.css";
 
-import Link from "next/link";
 import { CreateSessionForm } from "@/components/CreateSessionForm";
-import { IconTrash } from "@tabler/icons";
+import { DaySessions } from "@/components/DaySessions";
+import { WeeklySessions } from "@/components/WeeklySessions";
 
 const Home: NextPage = () => {
   const { data: sessions, isLoading } = useSessions();
@@ -27,11 +26,11 @@ const Home: NextPage = () => {
       style={{ maxWidth: "500px", margin: "auto" }}
     >
       <Stack justify={"center"}>
+        <WeeklySessions />
         <DatePicker
           locale="fr"
           weekendDays={[10]}
-          placeholder="Choisissez la date"
-          label="Ouvrir une session existante"
+          placeholder="Calendrier"
           renderDay={(date) => (
             <div>
               {date.getDate()}
@@ -45,7 +44,7 @@ const Home: NextPage = () => {
         <DaySessions selectedDate={selectedDate} sessions={sessions} />
         <Text>ou</Text>
         <Button onClick={() => setShowCreateSessionForm(true)}>
-          Nouvelle session
+          Créer une nouvelle session
         </Button>
         {showCreateSessionForm && <CreateSessionForm />}
       </Stack>
@@ -54,52 +53,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-const DaySessions = ({
-  selectedDate,
-  sessions,
-}: {
-  selectedDate: Date | null;
-  sessions?: Session[];
-}) => {
-  const { mutate: deleteSession } = useDeleteSession();
-  if (!selectedDate) return null;
-
-  const sessionsForTheDay = (sessions || []).filter((x) =>
-    isSameDate(new Date(x.date), selectedDate)
-  );
-  if (!sessionsForTheDay?.length)
-    return (
-      <p>
-        Pas de session enregistrées au{" "}
-        {dayjs(selectedDate).format("DD/MM/YYYY")}
-      </p>
-    );
-  return (
-    <ul>
-      {sessionsForTheDay.map((session) => (
-        <li key={session.id} style={{ display: "flex", marginBottom: "10px" }}>
-          <Link href={`/session/${session.id}`}>
-            <a>{session.name}</a>
-          </Link>
-          <span style={{ marginLeft: "10px" }}>
-            ({session.discipline} - {session.snowCondition} - {session.weather})
-          </span>
-          <IconTrash
-            color="red"
-            size={20}
-            style={{ marginLeft: "10px", cursor: "pointer" }}
-            onClick={() => {
-              const confirm = window.confirm(
-                `Etes vous sur de vouloir supprimer la session ${session.name} ?`
-              );
-              if (confirm) {
-                deleteSession(session.id);
-              }
-            }}
-          />
-        </li>
-      ))}
-    </ul>
-  );
-};
