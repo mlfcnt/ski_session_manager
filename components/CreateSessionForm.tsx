@@ -30,7 +30,8 @@ export const CreateSessionForm = () => {
     <Box sx={{ maxWidth: 300 }} mx="auto">
       <form
         onSubmit={form.onSubmit((values) => {
-          delete values.protected!;
+          //@ts-ignore
+          delete values.protected;
           createSession(values);
         })}
       >
