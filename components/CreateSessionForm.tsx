@@ -63,6 +63,17 @@ export const CreateSessionForm = () => {
           label="Protéger l'accès par mot de passe"
           mt="xl"
           {...form.getInputProps("protected")}
+          onChange={(e) => {
+            const isChecked = e.target.checked;
+            form.setValues({
+              protected: e.target.checked,
+            });
+            if (!isChecked) {
+              form.setValues({
+                password: null,
+              });
+            }
+          }}
         />
         {form.values.protected && (
           <TextInput
