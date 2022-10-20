@@ -8,7 +8,7 @@ export const WeeklySessions = () => {
   const { isLoading, sessionsGrouppedByDay } = useWeeklySessions();
   if (isLoading) return null;
   return (
-    <div style={{ maxHeight: "30vh", overflow: "scroll" }}>
+    <div style={{ maxHeight: "30vh", overflowY: "auto" }}>
       <Title size={20} align="center" style={{ marginBottom: "20px" }}>
         Prochaines sessions
       </Title>
