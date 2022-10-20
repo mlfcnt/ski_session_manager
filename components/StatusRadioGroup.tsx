@@ -5,11 +5,16 @@ export const StatusRadioGroup = ({
   ...props
 }: Omit<RadioGroupProps, "children">) => {
   return (
-    <Radio.Group {...props} style={{ display: "flex", justifyContent: "end" }}>
-      <Radio value="DNF" label="DNF" />
-      <Radio value="DSQ" label="DSQ" />
-      <Radio value="SC" label="SC" />
-      <Radio value="PP" label="PP" />
+    <Radio.Group
+      {...props}
+      style={{ display: "flex", justifyContent: "end" }}
+      size="xs"
+    >
+      <Radio value="DNS" label="DNS" size="xs" />
+      <Radio value="DNF" label="DNF" size="xs" />
+      <Radio value="DSQ" label="DSQ" size="xs" />
+      <Radio value="SC" label="SC" size="xs" />
+      <Radio value="PP" label="PP" size="xs" />
     </Radio.Group>
   );
 };

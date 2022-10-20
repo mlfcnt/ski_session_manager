@@ -154,7 +154,7 @@ export const TimingFormModal = ({
         </Title>
       }
     >
-      <Box sx={{ maxWidth: 300 }} mx="auto">
+      <Box>
         <form
           onSubmit={form.onSubmit((values) => {
             // les composants de timings revoient des heures/min/sec.. donc je dois salement tricher sur le format...
@@ -233,7 +233,7 @@ export const TimingFormModal = ({
           <Group position={isEdit ? "apart" : "right"} mt="md">
             {isEdit && (
               <Button
-                color={"red"}
+                color="red"
                 leftIcon={<IconTrash />}
                 onClick={() => {
                   handleClose();

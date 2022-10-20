@@ -8,6 +8,7 @@ import {
   addTimes,
   formatTimeForDx,
   millisecToSkiFormat,
+  strToMillisec,
 } from "../helpers/times";
 import { SkiFormattedTime } from "../types";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
@@ -109,6 +110,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m1Status || formatTimeForDx(props.m1 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m1Status || !e.m1) return 100_000_000_000_000;
+            return strToMillisec(e.m1);
+          }}
           width={70}
         />
         <Column
@@ -118,6 +123,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m2Status || formatTimeForDx(props.m2 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m2Status || !e.m2) return 100_000_000_000_000;
+            return strToMillisec(e.m2);
+          }}
           width={70}
         />
         <Column
@@ -127,6 +136,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m3Status || formatTimeForDx(props.m3 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m3Status || !e.m3) return 100_000_000_000_000;
+            return strToMillisec(e.m3);
+          }}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -137,6 +150,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m4Status || formatTimeForDx(props.m4 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m4Status || !e.m4) return 100_000_000_000_000;
+            return strToMillisec(e.m4);
+          }}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -147,6 +164,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m5Status || formatTimeForDx(props.m5 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m5Status || !e.m5) return 100_000_000_000_000;
+            return strToMillisec(e.m5);
+          }}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -157,6 +178,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m6Status || formatTimeForDx(props.m6 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m6Status || !e.m6) return 100_000_000_000_000;
+            return strToMillisec(e.m6);
+          }}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -167,6 +192,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m7Status || formatTimeForDx(props.m7 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m7Status || !e.m7) return 100_000_000_000_000;
+            return strToMillisec(e.m7);
+          }}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -177,6 +206,10 @@ export const SessionDatagrid = ({ session }: Props) => {
           calculateDisplayValue={(props: Timing) =>
             props.m8Status || formatTimeForDx(props.m8 as SkiFormattedTime)
           }
+          calculateSortValue={(e: Timing) => {
+            if (e.m8Status || !e.m8) return 100_000_000_000_000;
+            return strToMillisec(e.m8);
+          }}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -221,7 +254,7 @@ export const SessionDatagrid = ({ session }: Props) => {
             }) => {
               if (m1Status) return m1Status;
               if (m2Status) return m2Status;
-              if (!m1 || !m2) return "DNS";
+              if (!m1 || !m2) return "-";
               return millisecToSkiFormat(addTimes(m1, m2));
             }}
           />
