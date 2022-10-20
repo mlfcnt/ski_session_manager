@@ -35,7 +35,7 @@ export const millisecToSkiFormat = (
 };
 
 export const formatTimeForDx = (time: SkiFormattedTime) => {
-  if (!time) return "DNS";
+  if (!time) return "-";
   const [minutes, seconds, hundredth] = time.split(".");
   if (minutes === "00") return `${seconds}:${hundredth}`;
   return time;
