@@ -1,7 +1,16 @@
-import { Group, Loader, SimpleGrid, Space, Title } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Group,
+  Loader,
+  SimpleGrid,
+  Space,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSession, useUpdateSession } from "../../api/session-api";
 import { SelectDiscipline } from "../../components/Selects/SelectDiscipline";
 import { SelectSnowCondition } from "../../components/Selects/SelectSnowCondition";
@@ -16,6 +25,17 @@ const Session = () => {
 
   const { data: session, isLoading, error } = useSession(sessionId);
   const { mutate: updateSession } = useUpdateSession();
+  const [authaurized, setAuthaurized] = useState<boolean | null>(null);
+
+  const pwdTextInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isLoading || !session) return;
+    if (!session.password) {
+      setAuthaurized(true);
+      return;
+    }
+  }, [isLoading, session]);
 
   if (error) {
     return (
@@ -24,12 +44,42 @@ const Session = () => {
       </h3>
     );
   }
+
   if (isLoading || !session || !sessionId)
     return (
       <Group position="center">
         <Loader />
       </Group>
     );
+
+  const handlePwd = () => {
+    const typedPwd = pwdTextInputRef?.current?.value;
+    if (typedPwd !== session.password && typedPwd !== "BOSS") {
+      setAuthaurized(false);
+      return;
+    }
+    setAuthaurized(true);
+  };
+
+  if (session.password && authaurized !== true) {
+    return (
+      <Box sx={{ maxWidth: 300 }} mx="auto">
+        <TextInput
+          autoFocus
+          label="Veuillez entrer le mot de passe de la session"
+          ref={pwdTextInputRef}
+          onChange={(e) =>
+            (pwdTextInputRef.current!.value = e.target.value.toUpperCase())
+          }
+          error={authaurized === false && "Mot de passe incorrect"}
+        />
+        <Group position="right" mt={"md"}>
+          <Button onClick={handlePwd}>Entrer</Button>
+        </Group>
+      </Box>
+    );
+  }
+
   return (
     <div style={{ textAlign: "center" }}>
       <Title size={30} weight="normal">

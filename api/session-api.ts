@@ -23,6 +23,7 @@ export type Session = {
   snowCondition: SnowCondition;
   weather: Weather;
   mode: Mode;
+  password: string | null;
 };
 
 export const useSessions = () =>
@@ -51,6 +52,7 @@ export type CreateSessionDTO = {
   snowCondition: Session["snowCondition"];
   weather: Session["weather"];
   mode: Session["mode"];
+  password: Session["password"];
 };
 
 const createSession = async (toCreate: CreateSessionDTO) => {

@@ -1,4 +1,4 @@
-import { Box, Button, Group, TextInput } from "@mantine/core";
+import { Box, Button, Checkbox, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React from "react";
 import { SelectDiscipline } from "./Selects/SelectDiscipline";
@@ -8,10 +8,12 @@ import { SelectSnowCondition } from "./Selects/SelectSnowCondition";
 import { SelectWeather } from "./Selects/SelectWeather";
 import { Discipline, SnowCondition, Weather } from "types";
 import { SessionModesRadioGroup } from "./SessionModesRadioGroup";
+import { faker } from "@faker-js/faker";
 
 export const CreateSessionForm = () => {
   const { mutate: createSession } = useCreateSession();
-  const form = useForm<CreateSessionDTO>({
+
+  const form = useForm<CreateSessionDTO & { protected: boolean }>({
     initialValues: {
       name: "",
       date: new Date(),
@@ -19,11 +21,19 @@ export const CreateSessionForm = () => {
       snowCondition: null as unknown as SnowCondition,
       weather: null as unknown as Weather,
       mode: "TRAINING",
+      protected: false,
+      password: faker.random.alpha(4).toUpperCase(),
     },
   });
+
   return (
     <Box sx={{ maxWidth: 300 }} mx="auto">
-      <form onSubmit={form.onSubmit((values) => createSession(values))}>
+      <form
+        onSubmit={form.onSubmit((values) => {
+          delete values.protected!;
+          createSession(values);
+        })}
+      >
         <DatePicker
           size="xs"
           label="Date"
@@ -38,13 +48,24 @@ export const CreateSessionForm = () => {
           size="xs"
         />
 
-        <SelectDiscipline required {...form.getInputProps("discipline")} />
-        <SelectSnowCondition
-          required
-          {...form.getInputProps("snowCondition")}
+        <SelectDiscipline {...form.getInputProps("discipline")} />
+        <SelectSnowCondition {...form.getInputProps("snowCondition")} />
+        <SelectWeather {...form.getInputProps("weather")} />
+        <SessionModesRadioGroup {...form.getInputProps("mode")} />
+        <Checkbox
+          label="Protéger l'accès par mot de passe"
+          mt="xl"
+          {...form.getInputProps("protected")}
         />
-        <SelectWeather required {...form.getInputProps("weather")} />
-        <SessionModesRadioGroup required {...form.getInputProps("mode")} />
+        {form.values.protected && (
+          <TextInput
+            mt="xl"
+            placeholder="Mot de passe"
+            label="Choisissez le mot de passe"
+            required={form.values.protected}
+            {...form.getInputProps("password")}
+          />
+        )}
         <Group position="right" mt="md">
           <Button type="submit">Lancer</Button>
         </Group>
