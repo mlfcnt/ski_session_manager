@@ -1,4 +1,3 @@
-import { Text } from "@mantine/core";
 import { isSameDate } from "@mantine/dates";
 import { IconLock, IconTrash } from "@tabler/icons";
 import { Session, useDeleteSession } from "api/session-api";
@@ -31,19 +30,22 @@ export const DaySessions = ({
   return (
     <ul>
       {sessionsForTheDay.map((session) => (
-        <li key={session.id} style={{ display: "flex", marginBottom: "10px" }}>
+        <li
+          key={session.id}
+          style={{
+            display: "flex",
+            marginBottom: "10px",
+          }}
+        >
           <Link href={`/session/${session.id}`}>
             <a>{session.name}</a>
           </Link>
-          {session.password && <IconLock size={15} />}
+          {session.password && (
+            <IconLock size={15} style={{ marginLeft: "3px" }} />
+          )}
 
           <div style={{ marginLeft: "10px" }}>
-            <strong>{session.mode} </strong>
-            <Text italic size={15}>
-              {" "}
-              ({session.discipline} - {session.snowCondition} -{" "}
-              {session.weather}){" "}
-            </Text>
+            <span>{session.mode}</span>
           </div>
           <IconTrash
             color="red"
