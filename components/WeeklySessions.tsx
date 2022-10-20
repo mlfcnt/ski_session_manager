@@ -21,14 +21,14 @@ export const WeeklySessions = () => {
           )
           .sort(([a], [b]) => Number(dayjs(a)) - Number(dayjs(b)))
           .map(([date, sessions]) => (
-            <>
-              <strong key={date}> {dayjs(date).format("dddd DD MMMM")} </strong>
+            <div key={date}>
+              <strong> {dayjs(date).format("dddd DD MMMM")} </strong>
               <DaySessions
                 selectedDate={dayjs(date).toDate()}
                 sessions={sessions}
                 showNoSessionMessage={false}
               />
-            </>
+            </div>
           ))}
       </div>
     </div>
