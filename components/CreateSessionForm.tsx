@@ -30,8 +30,15 @@ export const CreateSessionForm = () => {
     <Box sx={{ maxWidth: 300 }} mx="auto">
       <form
         onSubmit={form.onSubmit((values) => {
-          delete values.protected!;
-          createSession(values);
+          createSession({
+            date: values.date,
+            discipline: values.discipline,
+            mode: values.mode,
+            name: values.name,
+            password: (values.protected && values.password) || null,
+            snowCondition: values.snowCondition,
+            weather: values.weather,
+          });
         })}
       >
         <DatePicker
