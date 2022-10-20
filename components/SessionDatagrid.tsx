@@ -36,26 +36,6 @@ export const SessionDatagrid = ({ session }: Props) => {
   }, [timings]);
 
   if (!session.id) return <Loader />;
-
-  const displaySkis = (timing: Timing) => {
-    if (session.mode === "TRAINING") {
-      return (
-        <span style={{ color: "grey", fontStyle: "italic" }}>
-          | {timing.m1Skis || "?"} - {timing.m2Skis || "?"} -{" "}
-          {timing.m3Skis || "?"} - {timing.m4Skis || "?"} -{" "}
-          {timing.m5Skis || "?"} - {timing.m6Skis || "?"} -{" "}
-          {timing.m7Skis || "?"} - {timing.m8Skis || "?"}
-        </span>
-      );
-    } else {
-      return (
-        <span style={{ color: "grey", fontStyle: "italic" }}>
-          | {timing.m1Skis || "?"} - {timing.m2Skis || "?"}
-        </span>
-      );
-    }
-  };
-
   return (
     <>
       <DataGrid<Timing>
@@ -63,7 +43,6 @@ export const SessionDatagrid = ({ session }: Props) => {
         allowColumnResizing
         columnResizingMode="widget"
         rowAlternationEnabled
-        // columnAutoWidth
         showBorders
         width={"100vw"}
         ref={gridRef}
@@ -86,30 +65,34 @@ export const SessionDatagrid = ({ session }: Props) => {
           // fixedPosition={session.mode === "TRAINING" && "left"}
         />
         <Column
+          dataField={"athleteName"}
           caption="Coureur"
           minWidth={session.mode === "TRAINING" ? 100 : "auto"}
-          cellRender={({ data: timing }: { data: Timing }) => (
-            <div>
-              <span>{timing.athleteName}</span>{" "}
-              {(timing.m1Skis ||
-                timing.m2Skis ||
-                timing.m3Skis ||
-                timing.m4Skis ||
-                timing.m5Skis ||
-                timing.m6Skis ||
-                timing.m7Skis ||
-                timing.m8Skis) &&
-                displaySkis(timing)}
-            </div>
-          )}
         />
         <Column
           dataField={"m1"}
           caption={"1"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m1Status || formatTimeForDx(props.m1 as SkiFormattedTime)
-          }
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m1Status || formatTimeForDx(data.m1 as SkiFormattedTime)}
+              </p>
+              {data.m1Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m1Skis}
+                </p>
+              )}
+            </div>
+          )}
           calculateSortValue={(e: Timing) => {
             if (e.m1Status || !e.m1) return 100_000_000_000_000;
             return strToMillisec(e.m1);
@@ -120,26 +103,60 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"m2"}
           caption={"2"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m2Status || formatTimeForDx(props.m2 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m2Status || !e.m2) return 100_000_000_000_000;
             return strToMillisec(e.m2);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m2Status || formatTimeForDx(data.m2 as SkiFormattedTime)}
+              </p>
+              {data.m2Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m2Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
         />
         <Column
           dataField={"m3"}
           caption={"3"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m3Status || formatTimeForDx(props.m3 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m3Status || !e.m3) return 100_000_000_000_000;
             return strToMillisec(e.m3);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m3Status || formatTimeForDx(data.m3 as SkiFormattedTime)}
+              </p>
+              {data.m3Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m3Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -147,13 +164,30 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"m4"}
           caption={"4"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m4Status || formatTimeForDx(props.m4 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m4Status || !e.m4) return 100_000_000_000_000;
             return strToMillisec(e.m4);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m4Status || formatTimeForDx(data.m4 as SkiFormattedTime)}
+              </p>
+              {data.m4Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m4Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -161,13 +195,30 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"m5"}
           caption={"5"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m5Status || formatTimeForDx(props.m5 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m5Status || !e.m5) return 100_000_000_000_000;
             return strToMillisec(e.m5);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m5Status || formatTimeForDx(data.m5 as SkiFormattedTime)}
+              </p>
+              {data.m5Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m5Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -175,13 +226,30 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"m6"}
           caption={"6"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m6Status || formatTimeForDx(props.m6 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m6Status || !e.m6) return 100_000_000_000_000;
             return strToMillisec(e.m6);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m6Status || formatTimeForDx(data.m6 as SkiFormattedTime)}
+              </p>
+              {data.m6Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m6Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -189,13 +257,30 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"m7"}
           caption={"7"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m7Status || formatTimeForDx(props.m7 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m7Status || !e.m7) return 100_000_000_000_000;
             return strToMillisec(e.m7);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m7Status || formatTimeForDx(data.m7 as SkiFormattedTime)}
+              </p>
+              {data.m7Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m7Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
           visible={session.mode === "TRAINING"}
         />
@@ -203,13 +288,30 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"m8"}
           caption={"8"}
           alignment={"right"}
-          calculateDisplayValue={(props: Timing) =>
-            props.m8Status || formatTimeForDx(props.m8 as SkiFormattedTime)
-          }
           calculateSortValue={(e: Timing) => {
             if (e.m8Status || !e.m8) return 100_000_000_000_000;
             return strToMillisec(e.m8);
           }}
+          cellRender={({ data }: { data: Timing }) => (
+            <div>
+              <p style={{ margin: 0, padding: 0 }}>
+                {data.m8Status || formatTimeForDx(data.m8 as SkiFormattedTime)}
+              </p>
+              {data.m8Skis && (
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "80%",
+                    margin: 0,
+                    padding: 0,
+                    color: "gray",
+                  }}
+                >
+                  {data.m8Skis}
+                </p>
+              )}
+            </div>
+          )}
           width={70}
           visible={session.mode === "TRAINING"}
         />

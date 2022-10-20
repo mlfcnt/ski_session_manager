@@ -88,7 +88,8 @@ const Session = () => {
       <Title size={20}>
         {session.name} - {session.mode}
       </Title>
-      <p>MDP : {session.password}</p>
+      {session.password && <p>MDP : {session.password}</p>}
+
       <Space h="xl" />
       <SimpleGrid cols={3}>
         <SelectDiscipline
