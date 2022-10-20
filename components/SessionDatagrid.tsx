@@ -65,12 +65,37 @@ export const SessionDatagrid = ({ session }: Props) => {
           // fixed={session.mode === "TRAINING"}
           // fixedPosition={session.mode === "TRAINING" && "left"}
         />
-        <Column
-          caption="Coureur"
-          dataField={"athleteName"}
-          // fixed={session.mode === "TRAINING"}
-          // fixedPosition={session.mode === "TRAINING" && "left"}
-        />
+        {session.mode === "RACE" ? (
+          <Column
+            caption="Coureur"
+            cellRender={({
+              data: { athleteName, m1Skis, m2Skis },
+            }: {
+              data: {
+                athleteName: Timing["athleteName"];
+                m1Skis: Timing["m1Skis"];
+                m2Skis: Timing["m2Skis"];
+              };
+            }) => (
+              <div>
+                <span>{athleteName}</span>{" "}
+                {(m1Skis || m2Skis) && (
+                  <span style={{ color: "grey", fontStyle: "italic" }}>
+                    | {m1Skis || "?"} - {m2Skis || "?"}
+                  </span>
+                )}
+              </div>
+            )}
+          />
+        ) : (
+          <Column
+            caption="Coureur"
+            dataField={"athleteName"}
+            // fixed={session.mode === "TRAINING"}
+            // fixedPosition={session.mode === "TRAINING" && "left"}
+          />
+        )}
+
         <Column
           dataField={"m1"}
           caption={"1"}
