@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import DataGrid, {
   Column,
-  Grouping,
   Scrolling,
   Selection,
 } from "devextreme-react/data-grid";
@@ -37,13 +36,34 @@ export const SessionDatagrid = ({ session }: Props) => {
 
   if (!session.id) return <Loader />;
 
+  const displaySkis = (timing: Timing) => {
+    if (session.mode === "TRAINING") {
+      return (
+        <span style={{ color: "grey", fontStyle: "italic" }}>
+          | {timing.m1Skis || "?"} - {timing.m2Skis || "?"} -{" "}
+          {timing.m3Skis || "?"} - {timing.m4Skis || "?"} -{" "}
+          {timing.m5Skis || "?"} - {timing.m6Skis || "?"} -{" "}
+          {timing.m7Skis || "?"} - {timing.m8Skis || "?"}
+        </span>
+      );
+    } else {
+      return (
+        <span style={{ color: "grey", fontStyle: "italic" }}>
+          | {timing.m1Skis || "?"} - {timing.m2Skis || "?"}
+        </span>
+      );
+    }
+  };
+
   return (
     <>
       <DataGrid<Timing>
         dataSource={timings}
+        allowColumnResizing
+        columnResizingMode="widget"
         rowAlternationEnabled
+        // columnAutoWidth
         showBorders
-        columnAutoWidth
         width={"100vw"}
         ref={gridRef}
         keyExpr="id"
@@ -52,7 +72,6 @@ export const SessionDatagrid = ({ session }: Props) => {
           setShowCreateTimingModal(true);
         }}
       >
-        <Grouping autoExpandAll={false} />
         <Selection mode={"single"} />
         <Scrolling showScrollbar />
 
@@ -67,23 +86,19 @@ export const SessionDatagrid = ({ session }: Props) => {
         />
         <Column
           caption="Coureur"
-          width={150}
-          cellRender={({
-            data: { athleteName, m1Skis, m2Skis },
-          }: {
-            data: {
-              athleteName: Timing["athleteName"];
-              m1Skis: Timing["m1Skis"];
-              m2Skis: Timing["m2Skis"];
-            };
-          }) => (
+          minWidth={session.mode === "TRAINING" ? 100 : "auto"}
+          cellRender={({ data: timing }: { data: Timing }) => (
             <div>
-              <span>{athleteName}</span>{" "}
-              {(m1Skis || m2Skis) && (
-                <span style={{ color: "grey", fontStyle: "italic" }}>
-                  | {m1Skis || "?"} - {m2Skis || "?"}
-                </span>
-              )}
+              <span>{timing.athleteName}</span>{" "}
+              {(timing.m1Skis ||
+                timing.m2Skis ||
+                timing.m3Skis ||
+                timing.m4Skis ||
+                timing.m5Skis ||
+                timing.m6Skis ||
+                timing.m7Skis ||
+                timing.m8Skis) &&
+                displaySkis(timing)}
             </div>
           )}
         />
@@ -165,50 +180,52 @@ export const SessionDatagrid = ({ session }: Props) => {
           width={70}
           visible={session.mode === "TRAINING"}
         />
-        <Column
-          dataField="total"
-          caption="Tot."
-          defaultSortIndex={0}
-          defaultSortOrder="asc"
-          sortOrder={"asc"}
-          sortIndex={0}
-          alignment="right"
-          visible={session.mode === "RACE"}
-          width={100}
-          calculateSortValue={({
-            m1,
-            m2,
-            m1Status,
-            m2Status,
-          }: {
-            m1: SkiFormattedTime;
-            m2: SkiFormattedTime;
-            m1Status: Timing["m1Status"];
-            m2Status: Timing["m2Status"];
-          }) => {
-            if (m1Status || m2Status || !m1 || !m2) {
-              return 100_000_000_000_000;
-            } else {
-              return addTimes(m1, m2);
-            }
-          }}
-          calculateDisplayValue={({
-            m1,
-            m2,
-            m1Status,
-            m2Status,
-          }: {
-            m1: SkiFormattedTime;
-            m2: SkiFormattedTime;
-            m1Status: Timing["m1Status"];
-            m2Status: Timing["m2Status"];
-          }) => {
-            if (m1Status) return m1Status;
-            if (m2Status) return m2Status;
-            if (!m1 || !m2) return "DNS";
-            return millisecToSkiFormat(addTimes(m1, m2));
-          }}
-        />
+        {session.mode === "RACE" && (
+          <Column
+            dataField="total"
+            caption="Tot."
+            defaultSortIndex={0}
+            defaultSortOrder="asc"
+            sortOrder={"asc"}
+            sortIndex={0}
+            alignment="right"
+            visible={session.mode === "RACE"}
+            width={100}
+            calculateSortValue={({
+              m1,
+              m2,
+              m1Status,
+              m2Status,
+            }: {
+              m1: SkiFormattedTime;
+              m2: SkiFormattedTime;
+              m1Status: Timing["m1Status"];
+              m2Status: Timing["m2Status"];
+            }) => {
+              if (m1Status || m2Status || !m1 || !m2) {
+                return 100_000_000_000_000;
+              } else {
+                return addTimes(m1, m2);
+              }
+            }}
+            calculateDisplayValue={({
+              m1,
+              m2,
+              m1Status,
+              m2Status,
+            }: {
+              m1: SkiFormattedTime;
+              m2: SkiFormattedTime;
+              m1Status: Timing["m1Status"];
+              m2Status: Timing["m2Status"];
+            }) => {
+              if (m1Status) return m1Status;
+              if (m2Status) return m2Status;
+              if (!m1 || !m2) return "DNS";
+              return millisecToSkiFormat(addTimes(m1, m2));
+            }}
+          />
+        )}
       </DataGrid>
       <Space h={"xl"} />
       <Group position="right" style={{ marginRight: "15px" }}>
