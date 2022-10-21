@@ -9,6 +9,7 @@ import "devextreme/dist/css/dx.light.css";
 import frMessages from "devextreme/localization/messages/fr.json";
 import { locale, loadMessages } from "devextreme/localization";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -38,11 +39,6 @@ export default function App(props: AppProps) {
         <QueryClientProvider client={queryClient}>
           <div
             style={{
-              backgroundImage: `url("https://ffs.fr/wp-content/themes/ffs/library/images/logo-ffs.svg")`,
-              backgroundSize: "15vh",
-              backgroundPositionY: "80vh",
-              backgroundPositionX: "center",
-              backgroundRepeat: "no-repeat",
               minHeight: "100vh",
             }}
           >
@@ -50,6 +46,23 @@ export default function App(props: AppProps) {
               <Link href="/">FFS timing session</Link>
             </Title>
             <Component {...pageProps} />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "100px",
+                marginBottom: "30px",
+              }}
+            >
+              <Image
+                src={
+                  "https://ffs.fr/wp-content/themes/ffs/library/images/logo-ffs.svg"
+                }
+                alt="ffs logo"
+                height="100px"
+                width="100px"
+              />
+            </div>
           </div>
         </QueryClientProvider>
       </MantineProvider>
