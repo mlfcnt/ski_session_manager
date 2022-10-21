@@ -13,7 +13,7 @@ import {
 import { SkiFormattedTime } from "../types";
 import { useTimingsBySessionId, Timing } from "api/timings-api";
 import { Session } from "api/session-api";
-import { Button, Group, Loader, Space } from "@mantine/core";
+import { Button, Group, Loader, Space, useMantineTheme } from "@mantine/core";
 import { TimingFormModal } from "./TimingForm/TimingFormModal";
 
 type Props = {
@@ -26,6 +26,19 @@ export const SessionDatagrid = ({ session }: Props) => {
   const { data: timings } = useTimingsBySessionId(session.id);
 
   const gridRef = useRef<DataGrid>(null);
+  const { colorScheme } = useMantineTheme();
+
+  useEffect(() => {
+    console.log("HERE", colorScheme);
+    (async () => {
+      if (colorScheme === "dark") {
+
+        await import(`devextreme/dist/css/dx.dark.css`!);
+        return
+      }
+      await import(`devextreme/dist/css/dx.light.css`!);
+    })();
+  }, [colorScheme]);
 
   useEffect(() => {
     //force sort refresh on new data
