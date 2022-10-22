@@ -82,6 +82,11 @@ export const CreateSessionForm = () => {
             label="Choisissez le mot de passe"
             required={form.values.protected}
             {...form.getInputProps("password")}
+            onChange={(e) =>
+              form.setValues({
+                password: e.target.value?.toUpperCase(),
+              })
+            }
           />
         )}
         <Group position="right" mt="md">
