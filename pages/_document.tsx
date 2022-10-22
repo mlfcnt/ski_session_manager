@@ -43,12 +43,6 @@ export default class _Document extends Document {
             sizes="32x32"
             href="/icons/32.png"
           />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/icons/26.png"
-          />
           <link rel="manifest" href="/manifest.json" />
           <link
             rel="mask-icon"

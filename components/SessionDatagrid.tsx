@@ -72,6 +72,7 @@ export const SessionDatagrid = ({ session }: Props) => {
           width={30}
           alignment="center"
           cellRender={(e) => e.rowIndex + 1}
+          fixed
           // fixed={session.mode === "TRAINING"}
           // fixedPosition={session.mode === "TRAINING" && "left"}
         />
