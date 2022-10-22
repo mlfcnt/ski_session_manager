@@ -79,6 +79,7 @@ export const SessionDatagrid = ({ session }: Props) => {
           dataField={"athleteName"}
           caption="Coureur"
           minWidth={session.mode === "TRAINING" ? 100 : "auto"}
+          fixed={true}
         />
         <Column
           dataField={"m1"}
