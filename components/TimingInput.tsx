@@ -7,6 +7,7 @@ export const TimingInput = ({ ...props }: TextInputProps) => {
       label="temps"
       description="Exemple du format attendu: 01.59.99"
       variant="filled"
+      pattern="\d*"
       {...props}
     />
   );

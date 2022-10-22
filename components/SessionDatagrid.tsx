@@ -29,12 +29,10 @@ export const SessionDatagrid = ({ session }: Props) => {
   const { colorScheme } = useMantineTheme();
 
   useEffect(() => {
-    console.log("HERE", colorScheme);
     (async () => {
       if (colorScheme === "dark") {
-
         await import(`devextreme/dist/css/dx.dark.css`!);
-        return
+        return;
       }
       await import(`devextreme/dist/css/dx.light.css`!);
     })();
