@@ -26,7 +26,7 @@ export const MTimingBlock = ({ form, initialFormValues, mNumber }: Props) => {
         <TimingInput
           label="Temps"
           {...form.getInputProps(`m${mNumber}`)}
-          onChange={(e) => {
+          onChange={(e: any) => {
             form.setFieldValue(
               `m${mNumber}`,
               (e?.target?.value as SkiFormattedTime) ||
