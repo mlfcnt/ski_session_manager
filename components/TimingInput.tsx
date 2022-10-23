@@ -4,7 +4,7 @@ import ReactCodeInput from "@acusti/react-code-input";
 export const TimingInput = ({ ...props }: any) => {
   return (
     <>
-      <ReactCodeInput type="number" fields={6} {...props} />
+      <ReactCodeInput type="number" fields={6} {...props} inputMode="numeric" />
       {props.error && (
         <>
           <span style={{ color: "red" }}>{props.error}</span>
