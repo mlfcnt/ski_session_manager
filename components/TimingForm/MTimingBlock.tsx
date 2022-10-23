@@ -16,7 +16,9 @@ export const MTimingBlock = ({ form, initialFormValues, mNumber }: Props) => {
   return (
     <>
       <Space h={"xl"} />
-      <Title size={"20px"}>Manche {mNumber}</Title>
+      <Title size={"20px"} style={{ display: "inline-block" }}>
+        Manche {mNumber}
+      </Title>
       <div
         style={{
           display: "flex",
@@ -26,20 +28,21 @@ export const MTimingBlock = ({ form, initialFormValues, mNumber }: Props) => {
         <TimingInput
           label="Temps"
           {...form.getInputProps(`m${mNumber}`)}
-          onChange={(e: any) => {
+          onChange={(e: string) => {
             form.setFieldValue(
               `m${mNumber}`,
-              (e?.target?.value as SkiFormattedTime) ||
-                initialFormValues[`m${mNumber}`]
+              (e as SkiFormattedTime) || initialFormValues[`m${mNumber}`]
             );
             form.setFieldValue(`m${mNumber}Status`, null);
           }}
+          m={mNumber}
+          form={form}
         />
         <StatusRadioGroup
           {...form.getInputProps(`m${mNumber}Status`)}
           onChange={(e: MStatus) => {
             form.setFieldValue(`m${mNumber}Status`, e);
-            form.setFieldValue(`m${mNumber}`, initialFormValues.m1);
+            form.setFieldValue(`m${mNumber}`, "000000");
           }}
         />
         <TextInput

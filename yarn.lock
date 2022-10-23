@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@acusti/react-code-input@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@acusti/react-code-input/-/react-code-input-3.11.0.tgz#b1c54e7e0d5011b3301b07780dd71e59f3ecbea7"
+  integrity sha512-G7BOfPxFguoYi9vQzibgFwmukQozc3CJ45m57L8HXbER3N0WOfurAmcsCboaAiW/PwPG0YMDadBtGH6xuH5rCw==
+  dependencies:
+    classnames "^2.2.5"
+
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.0.tgz#56c133824780de3174aed5ab6834f3026790154d"
