@@ -73,8 +73,6 @@ export const TimingFormModal = ({
       m7: timeValidator,
       m8: timeValidator,
     },
-    validateInputOnBlur: true,
-    validateInputOnChange: true,
   });
 
   useEffect(() => {
