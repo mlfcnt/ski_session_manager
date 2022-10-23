@@ -9,7 +9,7 @@ import {
   useUpdateTiming,
 } from "api/timings-api";
 import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { SelectAthlete } from "../Selects/SelectAthlete";
 import { IconTrash, IconDeviceFloppy } from "@tabler/icons";
 import { MTimingBlock } from "./MTimingBlock";
@@ -36,14 +36,14 @@ export const TimingFormModal = ({
 
   const initialFormValues = {
     athleteId: null as unknown as Timing["athleteId"],
-    m1: "00.00.00" as SkiFormattedTime,
-    m2: "00.00.00" as SkiFormattedTime,
-    m3: "00.00.00" as SkiFormattedTime,
-    m4: "00.00.00" as SkiFormattedTime,
-    m5: "00.00.00" as SkiFormattedTime,
-    m6: "00.00.00" as SkiFormattedTime,
-    m7: "00.00.00" as SkiFormattedTime,
-    m8: "00.00.00" as SkiFormattedTime,
+    m1: "000000" as SkiFormattedTime,
+    m2: "000000" as SkiFormattedTime,
+    m3: "000000" as SkiFormattedTime,
+    m4: "000000" as SkiFormattedTime,
+    m5: "000000" as SkiFormattedTime,
+    m6: "000000" as SkiFormattedTime,
+    m7: "000000" as SkiFormattedTime,
+    m8: "000000" as SkiFormattedTime,
     m1Skis: "",
     m2Skis: "",
     m3Skis: "",
@@ -55,10 +55,11 @@ export const TimingFormModal = ({
     sessionId: session.id,
   };
 
-  const timeValidator = (value: string) =>
-    !value || dayjs(`${value}0`, "mm.ss.SSS", true).isValid()
+  const timeValidator = (value: string) => {
+    return !value || dayjs(`${value}0`, "mmssSSS", true).isValid()
       ? null
       : "Format invalide";
+  };
 
   const form = useForm<CreateTimingDTO>({
     initialValues: initialFormValues,
@@ -72,8 +73,6 @@ export const TimingFormModal = ({
       m7: timeValidator,
       m8: timeValidator,
     },
-    validateInputOnBlur: true,
-    validateInputOnChange: true,
   });
 
   useEffect(() => {
@@ -82,14 +81,31 @@ export const TimingFormModal = ({
       athleteId: String(
         initialValues.athleteId
       ) as unknown as Timing["athleteId"],
-      m1: initialValues.m1 || initialFormValues.m1,
-      m2: initialValues.m2 || initialFormValues.m2,
-      m3: initialValues.m3 || initialFormValues.m3,
-      m4: initialValues.m4 || initialFormValues.m4,
-      m5: initialValues.m5 || initialFormValues.m5,
-      m6: initialValues.m6 || initialFormValues.m6,
-      m7: initialValues.m7 || initialFormValues.m7,
-      m8: initialValues.m8 || initialFormValues.m8,
+      m1: initialValues.m1
+        ? (initialValues.m1?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m1,
+      m2: initialValues.m2
+        ? (initialValues.m2?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m2,
+      m3: initialValues.m3
+        ? (initialValues.m3?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m3,
+      m4: initialValues.m4
+        ? (initialValues.m4?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m4,
+      m5: initialValues.m5
+        ? (initialValues.m5?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m5,
+      m6: initialValues.m6
+        ? (initialValues.m6?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m6,
+      m7: initialValues.m7
+        ? (initialValues.m7?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m7,
+      m8: initialValues.m8
+        ? (initialValues.m8?.replaceAll(".", "") as SkiFormattedTime)
+        : initialFormValues.m8,
+
       m1Skis: initialValues.m1Skis,
       m2Skis: initialValues.m2Skis,
       m3Skis: initialValues.m3Skis,
@@ -144,10 +160,12 @@ export const TimingFormModal = ({
 
   return (
     <Modal
+      fullScreen
+      overflow="inside"
+      size="80vw"
       opened={opened}
       onClose={handleClose}
       overlayBlur={2}
-      overflow="inside"
       title={
         <Title align="center" size={22}>
           Ajout / modification de temps
@@ -161,14 +179,54 @@ export const TimingFormModal = ({
             const valuesToSave = {
               ...values,
               athleteId: Number(values.athleteId),
-              m1: values.m1 !== "00.00.00" ? values.m1 : null,
-              m2: values.m2 !== "00.00.00" ? values.m2 : null,
-              m3: values.m3 !== "00.00.00" ? values.m3 : null,
-              m4: values.m4 !== "00.00.00" ? values.m4 : null,
-              m5: values.m5 !== "00.00.00" ? values.m5 : null,
-              m6: values.m6 !== "00.00.00" ? values.m6 : null,
-              m7: values.m7 !== "00.00.00" ? values.m7 : null,
-              m8: values.m8 !== "00.00.00" ? values.m8 : null,
+              m1:
+                values.m1 && values.m1 !== ("000000" as SkiFormattedTime)
+                  ? (values.m1
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m2:
+                values.m2 && values.m2 !== ("000000" as SkiFormattedTime)
+                  ? (values.m2
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m3:
+                values.m3 && values.m3 !== ("000000" as SkiFormattedTime)
+                  ? (values.m3
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m4:
+                values.m4 && values.m4 !== ("000000" as SkiFormattedTime)
+                  ? (values.m4
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m5:
+                values.m5 && values.m5 !== ("000000" as SkiFormattedTime)
+                  ? (values.m5
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m6:
+                values.m6 && values.m6 !== ("000000" as SkiFormattedTime)
+                  ? (values.m6
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m7:
+                values.m7 && values.m7 !== ("000000" as SkiFormattedTime)
+                  ? (values.m7
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
+              m8:
+                values.m8 && values.m8 !== ("000000" as SkiFormattedTime)
+                  ? (values.m8
+                      .replace(/.{2}/g, "$&.")
+                      .slice(0, -1) as SkiFormattedTime)
+                  : null,
             };
             if (isEdit) {
               updateTiming({ ...valuesToSave, id: initialValues!.id });
