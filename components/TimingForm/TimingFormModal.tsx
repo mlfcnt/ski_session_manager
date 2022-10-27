@@ -1,4 +1,4 @@
-import { Box, Button, Group, Modal, Space, Title } from "@mantine/core";
+import { Box, Button, Group, Modal, Space, Stack, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Session } from "api/session-api";
 import {
@@ -9,9 +9,9 @@ import {
   useUpdateTiming,
 } from "api/timings-api";
 import dayjs from "dayjs";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { SelectAthlete } from "../Selects/SelectAthlete";
-import { IconTrash, IconDeviceFloppy } from "@tabler/icons";
+import { IconTrash, IconDeviceFloppy, IconX } from "@tabler/icons";
 import { MTimingBlock } from "./MTimingBlock";
 import { SkiFormattedTime } from "types";
 
@@ -288,7 +288,10 @@ export const TimingFormModal = ({
           )}
 
           <Space h={"xl"} />
-          <Group position={isEdit ? "apart" : "right"} mt="md">
+          <Stack mt="md" align={"center"}>
+            <Button type="submit" leftIcon={<IconDeviceFloppy />} color="green">
+              Enregistrer
+            </Button>
             {isEdit && (
               <Button
                 color="red"
@@ -306,10 +309,11 @@ export const TimingFormModal = ({
                 Supprimer
               </Button>
             )}
-            <Button type="submit" leftIcon={<IconDeviceFloppy />}>
-              Enregistrer
+
+            <Button onClick={onClose} leftIcon={<IconX />}>
+              Annuler les changements
             </Button>
-          </Group>
+          </Stack>
         </form>
       </Box>
     </Modal>

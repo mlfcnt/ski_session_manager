@@ -15,6 +15,7 @@ import { useTimingsBySessionId, Timing, MStatus } from "api/timings-api";
 import { Session } from "api/session-api";
 import { Button, Group, Loader, Space, useMantineTheme } from "@mantine/core";
 import { TimingFormModal } from "./TimingForm/TimingFormModal";
+import { IconPlaylistAdd, IconRefresh } from "@tabler/icons";
 
 type Props = {
   session: Session;
@@ -23,7 +24,9 @@ type Props = {
 export const SessionDatagrid = ({ session }: Props) => {
   const [showCreateTimingModal, setShowCreateTimingModal] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState<Timing | null>(null);
-  const { data: timings } = useTimingsBySessionId(session.id);
+  const { data: timings, refetch: refetchTimings } = useTimingsBySessionId(
+    session.id
+  );
 
   const gridRef = useRef<DataGrid>(null);
   const { colorScheme } = useMantineTheme();
@@ -302,11 +305,16 @@ export const SessionDatagrid = ({ session }: Props) => {
       </DataGrid>
       <Space h={"xl"} />
       <Group position="right" style={{ marginRight: "15px" }}>
+        <Button onClick={() => refetchTimings()} leftIcon={<IconRefresh />}>
+          Rafraichir
+        </Button>
         <Button
+          color={"green"}
           onClick={() => {
             setSelectedRowData(null);
             setShowCreateTimingModal(true);
           }}
+          leftIcon={<IconPlaylistAdd />}
         >
           Ajouter
         </Button>
